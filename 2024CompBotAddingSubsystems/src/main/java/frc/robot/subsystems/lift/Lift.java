@@ -7,8 +7,12 @@ package frc.robot.subsystems.lift;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.ForwardLimitSourceValue;
+import com.ctre.phoenix6.signals.ForwardLimitTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.ReverseLimitSourceValue;
+import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -34,6 +38,20 @@ public class Lift extends SubsystemBase {
     leftConfiguration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     rightConfiguration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
+    leftConfiguration.HardwareLimitSwitch.ForwardLimitSource = ForwardLimitSourceValue.LimitSwitchPin;
+    leftConfiguration.HardwareLimitSwitch.ForwardLimitType = ForwardLimitTypeValue.NormallyOpen;
+    leftConfiguration.HardwareLimitSwitch.ForwardLimitEnable = true;
+    rightConfiguration.HardwareLimitSwitch.ForwardLimitSource = ForwardLimitSourceValue.LimitSwitchPin;
+    rightConfiguration.HardwareLimitSwitch.ForwardLimitType = ForwardLimitTypeValue.NormallyOpen;
+    rightConfiguration.HardwareLimitSwitch.ForwardLimitEnable = true;
+
+    leftConfiguration.HardwareLimitSwitch.ReverseLimitSource = ReverseLimitSourceValue.LimitSwitchPin;
+    leftConfiguration.HardwareLimitSwitch.ReverseLimitType = ReverseLimitTypeValue.NormallyOpen;
+    leftConfiguration.HardwareLimitSwitch.ReverseLimitEnable = true;
+    rightConfiguration.HardwareLimitSwitch.ReverseLimitSource = ReverseLimitSourceValue.LimitSwitchPin;
+    rightConfiguration.HardwareLimitSwitch.ReverseLimitType = ReverseLimitTypeValue.NormallyOpen;
+    rightConfiguration.HardwareLimitSwitch.ReverseLimitEnable = true;
+
     leftClimber.getConfigurator().apply(leftConfiguration);
 
     rightClimber.getConfigurator().apply(rightConfiguration);
@@ -41,8 +59,8 @@ public class Lift extends SubsystemBase {
     leftClimber.setNeutralMode(NeutralModeValue.Brake);
     rightClimber.setNeutralMode(NeutralModeValue.Brake);
 
-    leftClimber.setSafetyEnabled(true);
-    rightClimber.setSafetyEnabled(true);
+    leftClimber.setSafetyEnabled(false);
+    rightClimber.setSafetyEnabled(false);
     
     createShuffleboard();
   }
@@ -51,10 +69,46 @@ public class Lift extends SubsystemBase {
     ShuffleboardTab tab = Shuffleboard.getTab("LIFT");
     tab.add("LIFT", this);
     tab.addNumber("OutputSpeed", this::getOutputSpeed);
-    //tab.addBoolean("LeftLowLimitSwitch", this::atLeftLowLimit);
-    //tab.addBoolean("RightLowLimitSwitch", this::atRightLowLimit);
-    //tab.addBoolean("LeftHighLimitSwitch", this::atLeftHighLimit);
-    //tab.addBoolean("RightHighLimitSwitch", this::atRightHighLimit);
+    tab.addBoolean("LeftLowLimitSwitch", this::atLeftLowLimit);
+    tab.addBoolean("RightLowLimitSwitch", this::atRightLowLimit);
+    tab.addBoolean("LeftHighLimitSwitch", this::atLeftHighLimit);
+    tab.addBoolean("RightHighLimitSwitch", this::atRightHighLimit);
+  }
+
+  public boolean atLeftLowLimit() {
+    double val = leftClimber.getForwardLimit().getValueAsDouble();
+    if (val != 1.0) {
+        return true;
+    } else {
+        return false;
+    }
+  }
+
+  public boolean atRightLowLimit() {
+    double val = rightClimber.getForwardLimit().getValueAsDouble();
+    if (val != 1.0) {
+        return true;
+    } else {
+        return false;
+    }
+  }
+
+  public boolean atLeftHighLimit() {
+    double val = leftClimber.getReverseLimit().getValueAsDouble();
+    if (val != 1.0) {
+        return true;
+    } else {
+        return false;
+    }
+  }
+
+  public boolean atRightHighLimit() {
+    double val = rightClimber.getReverseLimit().getValueAsDouble();
+    if (val != 1.0) {
+        return true;
+    } else {
+        return false;
+    }
   }
 
   public double getOutputSpeed() {

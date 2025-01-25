@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
+import frc.robot.subsystems.index.Index;
+import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.lift.Lift;
 
 
@@ -49,7 +51,9 @@ public class RobotContainer {
     private final AutoRoutines autoRoutines;
     private final AutoChooser autoChooser = new AutoChooser();
 
-    private Lift lift;
+    private final Index index;
+    private final Intake intake;
+    private final Lift lift;
 
     public RobotContainer() {
         autoFactory = drivetrain.createAutoFactory();
@@ -73,6 +77,8 @@ public class RobotContainer {
 
         rotateJoystickButtons[12] = rotateJoystick.button(12);
 
+        index = new Index();
+        intake = new Intake();
         lift = new Lift();
 
         configureBindings();
@@ -131,10 +137,10 @@ public class RobotContainer {
         gyroResetButton.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         // LIFT TESTING
-        liftDownButton.onTrue(Commands.runOnce(() -> lift.runClimbers(0.5)));
+        liftDownButton.onTrue(Commands.runOnce(() -> lift.runClimbers(1.0)));
         liftDownButton.onFalse(Commands.runOnce(() -> lift.runClimbers(0.0)));
 
-        liftUpButton.onTrue(Commands.runOnce(() -> lift.runClimbers(-1.5)));
+        liftUpButton.onTrue(Commands.runOnce(() -> lift.runClimbers(-1.0)));
         liftUpButton.onFalse(Commands.runOnce(() -> lift.runClimbers(0.0)));
 
         drivetrain.registerTelemetry(logger::telemeterize);
