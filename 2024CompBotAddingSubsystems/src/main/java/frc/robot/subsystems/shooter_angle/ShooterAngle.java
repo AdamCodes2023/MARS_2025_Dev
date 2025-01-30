@@ -8,8 +8,8 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
-import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -55,25 +55,24 @@ public class ShooterAngle extends SubsystemBase {
 
     angleConfig.idleMode(IdleMode.kCoast);
     
-    absEncoder = angleMotor.getAbsoluteEncoder(Type.kDutyCycle);
+    
     angleConfig.absoluteEncoder.inverted(true);
     angleConfig.absoluteEncoder.zeroOffset(0.5);
     
     // absEncoder.setPositionConversionFactor(360.0);
     // relEncoder = angleMotor.getEncoder();
-
-    pidControl = angleMotor.getPIDController();
+    
     angleConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
     angleConfig.closedLoop.positionWrappingEnabled(true);
     angleConfig.closedLoop.positionWrappingMaxInput(1.0);
     angleConfig.closedLoop.positionWrappingMinInput(0.0);
 
     // PID coefficients
-    kP = 0.0027;
+    kP = 0.25;
     kI = 0;
-    kD = 0;
+    kD = 11.0;
     kIz = 0;
-    kFF = 0;
+    kFF = 0.025;
     kMaxOutput = 1;
     kMinOutput = -1;
     maxRPM = 1200;
@@ -84,12 +83,9 @@ public class ShooterAngle extends SubsystemBase {
     maxAcc = 600;
 
     // set PID coefficients
-    pidControl.setP(kP);
-    pidControl.setI(kI);
-    pidControl.setD(kD);
-    pidControl.setIZone(kIz);
-    pidControl.setFF(kFF);
-    pidControl.setOutputRange(kMinOutput, kMaxOutput);
+    angleConfig.closedLoop.pidf(kP, kI, kD, kFF, ClosedLoopSlot.kSlot0);
+    angleConfig.closedLoop.iZone(kIz, ClosedLoopSlot.kSlot0);
+    angleConfig.closedLoop.outputRange(kMinOutput, kMaxOutput, ClosedLoopSlot.kSlot0);
 
     /**
      * Smart Motion coefficients are set on a SparkPIDController object
@@ -100,13 +96,15 @@ public class ShooterAngle extends SubsystemBase {
      * RPM^2 of the pid controller in Smart Motion mode - setSmartMotionAllowedClosedLoopError()
      * will set the max allowed error for the pid controller in Smart Motion mode
      */
-    int smartMotionSlot = 0;
-    pidControl.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
-    pidControl.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
-    pidControl.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
-    pidControl.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+    angleConfig.closedLoop.maxMotion.maxVelocity(maxVel, ClosedLoopSlot.kSlot0);
+    angleConfig.closedLoop.maxMotion.maxAcceleration(maxAcc, ClosedLoopSlot.kSlot0);
+    angleConfig.closedLoop.maxMotion.allowedClosedLoopError(allowedErr, ClosedLoopSlot.kSlot0);
+    //pidControl.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
 
     angleMotor.configure(angleConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    absEncoder = angleMotor.getAbsoluteEncoder();
+    pidControl = angleMotor.getClosedLoopController();
 
     hardStopBottom = new DigitalInput(2);
     hardStopTop = new DigitalInput(3);
@@ -146,7 +144,7 @@ public class ShooterAngle extends SubsystemBase {
   }
 
   public void smartMotionPosition(double pos) {
-    pidControl.setReference(pos + (angleCorrector/360.0), CANSparkMax.ControlType.kSmartMotion);
+    pidControl.setReference(pos + (angleCorrector/360.0), SparkMax.ControlType.kMAXMotionPositionControl);
     // pidControl.setReference(pos, CANSparkMax.ControlType.kPosition);
   }
 

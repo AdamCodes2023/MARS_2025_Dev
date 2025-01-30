@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Lift extends SubsystemBase {
   private TalonFX leftClimber, rightClimber;
+  private TalonFXConfiguration leftConfiguration, rightConfiguration;
 
   private final DutyCycleOut leftOut = new DutyCycleOut(0);
   private final DutyCycleOut rightOut = new DutyCycleOut(0);
@@ -31,8 +32,8 @@ public class Lift extends SubsystemBase {
     rightClimber = new TalonFX(32);
 
     /* Configure the devices */
-    var leftConfiguration = new TalonFXConfiguration();
-    var rightConfiguration = new TalonFXConfiguration();
+    leftConfiguration = new TalonFXConfiguration();
+    rightConfiguration = new TalonFXConfiguration();
 
     /* User can optionally change the configs or leave it alone to perform a factory default */
     leftConfiguration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
