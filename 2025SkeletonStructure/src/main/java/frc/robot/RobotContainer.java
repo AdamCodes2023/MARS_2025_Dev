@@ -14,7 +14,6 @@ import choreo.auto.AutoFactory;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -26,8 +25,10 @@ import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 public class RobotContainer {
     private CommandJoystick driveJoystick;
     private CommandJoystick rotateJoystick;
+    private CommandJoystick extraJoystick;
     private Trigger[] driveJoystickButtons;
     private Trigger[] rotateJoystickButtons;
+    private Trigger[] extraJoystickButtons;
 
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -57,15 +58,18 @@ public class RobotContainer {
 
         driveJoystick = new CommandJoystick(0);
         rotateJoystick = new CommandJoystick(1);
+        extraJoystick = new CommandJoystick(2);
 
         // buttons use 1-based indexing such that the index matches the button number; leave index 0 set
         // to null
-        this.driveJoystickButtons = new Trigger[13];
-        this.rotateJoystickButtons = new Trigger[13];
+        driveJoystickButtons = new Trigger[13];
+        rotateJoystickButtons = new Trigger[13];
+        extraJoystickButtons = new Trigger[13];
 
         for (int i = 1; i < driveJoystickButtons.length; i++) {
             driveJoystickButtons[i] = driveJoystick.button(i);
             rotateJoystickButtons[i] = rotateJoystick.button(i);
+            extraJoystickButtons[i] = extraJoystick.button(i);
         }
         configureBindings();
     }
@@ -83,17 +87,30 @@ public class RobotContainer {
         Trigger brakeButton = driveJoystickButtons[10];
         Trigger xStanceButton = driveJoystickButtons[11];
         
-        Trigger rb1 = driveJoystickButtons[1];
-        Trigger rb2 = driveJoystickButtons[2];
-        Trigger rb3 = driveJoystickButtons[3];
-        Trigger rb4 = driveJoystickButtons[4];
-        Trigger rb5 = driveJoystickButtons[5];
-        Trigger rb6 = driveJoystickButtons[6];
-        Trigger rb7 = driveJoystickButtons[7];
-        Trigger rb8 = driveJoystickButtons[8];
-        Trigger rb9 = driveJoystickButtons[9];
-        Trigger rb10 = driveJoystickButtons[10];
-        Trigger rb11 = driveJoystickButtons[11];
+        Trigger rb1 = rotateJoystickButtons[1];
+        Trigger rb2 = rotateJoystickButtons[2];
+        Trigger rb3 = rotateJoystickButtons[3];
+        Trigger rb4 = rotateJoystickButtons[4];
+        Trigger rb5 = rotateJoystickButtons[5];
+        Trigger rb6 = rotateJoystickButtons[6];
+        Trigger rb7 = rotateJoystickButtons[7];
+        Trigger rb8 = rotateJoystickButtons[8];
+        Trigger rb9 = rotateJoystickButtons[9];
+        Trigger rb10 = rotateJoystickButtons[10];
+        Trigger rb11 = rotateJoystickButtons[11];
+
+        Trigger ex1 = extraJoystickButtons[1];
+        Trigger ex2 = extraJoystickButtons[2];
+        Trigger ex3 = extraJoystickButtons[3];
+        Trigger ex4 = extraJoystickButtons[4];
+        Trigger ex5 = extraJoystickButtons[5];
+        Trigger ex6 = extraJoystickButtons[6];
+        Trigger ex7 = extraJoystickButtons[7];
+        Trigger ex8 = extraJoystickButtons[8];
+        Trigger ex9 = extraJoystickButtons[9];
+        Trigger ex10 = extraJoystickButtons[10];
+        Trigger ex11 = extraJoystickButtons[11];
+
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
