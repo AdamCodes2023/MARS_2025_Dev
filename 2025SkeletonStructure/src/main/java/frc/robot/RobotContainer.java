@@ -19,7 +19,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.pneumatics.Pneumatics;
 
 
 public class RobotContainer {
@@ -43,6 +47,10 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final Elevator elevator = new Elevator();
+    public final Climber climber = new Climber();
+    public final Intake intake = new Intake();
+    //public final Pneumatics = new Pneumatics();
 
     /* Path follower */
     private final AutoFactory autoFactory;
@@ -51,9 +59,10 @@ public class RobotContainer {
 
     public RobotContainer() {
         autoFactory = drivetrain.createAutoFactory();
-        autoRoutines = new AutoRoutines(autoFactory);
+        autoRoutines = new AutoRoutines(autoFactory, elevator, climber);
 
         autoChooser.addRoutine("SimplePath", autoRoutines::simplePathAuto);
+        autoChooser.addRoutine("ScoreCoralFar", autoRoutines::scoreCoralFarAuto);
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
         driveJoystick = new CommandJoystick(0);
