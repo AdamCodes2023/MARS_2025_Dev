@@ -23,7 +23,7 @@ import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.pneumatics.Pneumatics;
+import frc.robot.subsystems.pneumatics.PneumaticControl;
 
 
 public class RobotContainer {
@@ -46,11 +46,12 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
+    public final Climber climber = new Climber();
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Elevator elevator = new Elevator();
-    public final Climber climber = new Climber();
     public final Intake intake = new Intake();
-    //public final Pneumatics = new Pneumatics();
+    //LIGHTS
+    public final PneumaticControl pneumaticControl = new PneumaticControl();
 
     /* Path follower */
     private final AutoFactory autoFactory;
