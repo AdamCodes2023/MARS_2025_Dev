@@ -45,8 +45,8 @@ public class Elevator extends SubsystemBase {
     stop = new NeutralOut();
     mmReq = new MotionMagicVoltage(0);
 
-    elevatorMotor = new TalonFX(99);
-    elevatorEncoder = new CANcoder(99);
+    elevatorMotor = new TalonFX(ElevatorConstants.ELEVATOR_MOTOR_CANID.getValue());
+    elevatorEncoder = new CANcoder(ElevatorConstants.ELEVATOR_CANCODER_CANID.getValue());
     elevatorConfiguration = new TalonFXConfiguration();
     encoderConfiguration = new CANcoderConfiguration();
 
@@ -82,8 +82,8 @@ public class Elevator extends SubsystemBase {
 
     elevatorMotor.setSafetyEnabled(false);
 
-    hardStopBottom = new DigitalInput(99);
-    hardStopTop = new DigitalInput(99);
+    hardStopBottom = new DigitalInput(ElevatorConstants.HARD_STOP_BOTTOM_CHANNEL.getValue());
+    hardStopTop = new DigitalInput(ElevatorConstants.HARD_STOP_TOP_CHANNEL.getValue());
 
     looking = true;
 

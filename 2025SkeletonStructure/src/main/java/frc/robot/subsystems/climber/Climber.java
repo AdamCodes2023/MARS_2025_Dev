@@ -33,7 +33,7 @@ public class Climber extends SubsystemBase {
     stop = new NeutralOut();
     climberOut = new DutyCycleOut(0.0);
 
-    climberMotor = new TalonFX(99);
+    climberMotor = new TalonFX(ClimberConstants.CLIMBER_MOTOR_CANID.getValue());
     climberConfiguration = new TalonFXConfiguration();
 
     /* User can optionally change the configs or leave it alone to perform a factory default */
@@ -44,10 +44,10 @@ public class Climber extends SubsystemBase {
 
     climberMotor.setSafetyEnabled(false);
 
-    leftAttachment = new DigitalInput(99);
-    rightAttachment = new DigitalInput(99);
-    bottomLimit = new DigitalInput(99);
-    topLimit = new DigitalInput(99);
+    leftAttachment = new DigitalInput(ClimberConstants.LEFT_ATTACHMENT_CHANNEL.getValue());
+    rightAttachment = new DigitalInput(ClimberConstants.RIGHT_ATTACHMENT_CHANNEL.getValue());
+    bottomLimit = new DigitalInput(ClimberConstants.BOTTOM_LIMIT_CHANNEL.getValue());
+    topLimit = new DigitalInput(ClimberConstants.TOP_LIMIT_CHANNEL.getValue());
 
     looking = true;
 

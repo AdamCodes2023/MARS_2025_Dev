@@ -11,16 +11,18 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import java.nio.ByteBuffer;
 import java.util.Optional;
 
 public class Lights extends SubsystemBase {
-  private static I2C arduino = new I2C(Port.kMXP, 4);
+  private static I2C arduino = new I2C(Port.kMXP, LightConstants.ARDUINO_DEVICE_ADDRESS.getValue());
   // private byte arduinoAddress = 4;
   // private byte bytesToSend = 1;
   private static boolean success = true;
+  private static int currentLightCommand = -1;
+
   public static boolean notUsed = true;
   public static boolean inAuto = false;
 
@@ -44,11 +46,16 @@ public class Lights extends SubsystemBase {
     ShuffleboardTab tab = Shuffleboard.getTab("LIGHTS");
     // tab.add("LIGHTS", this);
     tab.addBoolean("I2C SEND SUCCESS", () -> getSendSuccess());
-    SmartDashboard.putNumber("LIGHT COMMAND", -1);
+    tab.addNumber("LIGHT COMMAND", () -> getCurrentLightCommand());
+    //SmartDashboard.putNumber("LIGHT COMMAND", -1);
   }
 
-  public static boolean getSendSuccess() {
+  private static boolean getSendSuccess() {
     return !success;
+  }
+
+  private static int getCurrentLightCommand() {
+    return currentLightCommand;
   }
 
   public static void getAllianceLights() {
@@ -112,9 +119,14 @@ public class Lights extends SubsystemBase {
     ByteBuffer dataBuffer = ByteBuffer.wrap(dataBytes);
     success = I2CJNI.i2CWrite(1, arduinoAddress, dataBuffer, bytesToSend);
     */
-    success = arduino.write(0, 0);
+
+    success = arduino.write(LightConstants.ARDUINO_REGISTER_ADDRESS.getValue(),
+                            LightConstants.OFF_LIGHT_COMMAND.getValue()
+                            );
+
     notUsed = true;
-    SmartDashboard.putNumber("LIGHT COMMAND", 0);
+    currentLightCommand = LightConstants.OFF_LIGHT_COMMAND.getValue();
+    //SmartDashboard.putNumber("LIGHT COMMAND", LightConstants.OFF_LIGHT_COMMAND.getValue());
   }
 
   public static void turnRed() {
@@ -123,9 +135,14 @@ public class Lights extends SubsystemBase {
     ByteBuffer dataBuffer = ByteBuffer.wrap(dataBytes);
     success = I2CJNI.i2CWrite(1, arduinoAddress, dataBuffer, bytesToSend);
     */
-    success = arduino.write(0, 2);
+
+    success = arduino.write(LightConstants.ARDUINO_REGISTER_ADDRESS.getValue(),
+                            LightConstants.RED_LIGHT_COMMAND.getValue()
+                            );
+
     notUsed = false;
-    SmartDashboard.putNumber("LIGHT COMMAND", 2);
+    currentLightCommand = LightConstants.RED_LIGHT_COMMAND.getValue();
+    //SmartDashboard.putNumber("LIGHT COMMAND", LightConstants.RED_LIGHT_COMMAND.getValue());
   }
 
   public static void turnBlue() {
@@ -134,9 +151,14 @@ public class Lights extends SubsystemBase {
     ByteBuffer dataBuffer = ByteBuffer.wrap(dataBytes);
     success = I2CJNI.i2CWrite(1, arduinoAddress, dataBuffer, bytesToSend);
     */
-    success = arduino.write(0, 1);
+
+    success = arduino.write(LightConstants.ARDUINO_REGISTER_ADDRESS.getValue(),
+                            LightConstants.BLUE_LIGHT_COMMAND.getValue()
+                            );
+
     notUsed = false;
-    SmartDashboard.putNumber("LIGHT COMMAND", 1);
+    currentLightCommand = LightConstants.BLUE_LIGHT_COMMAND.getValue();
+    //SmartDashboard.putNumber("LIGHT COMMAND", LightConstants.BLUE_LIGHT_COMMAND.getValue());
   }
 
   public static void turnIntakeRed() {
@@ -145,9 +167,14 @@ public class Lights extends SubsystemBase {
     ByteBuffer dataBuffer = ByteBuffer.wrap(dataBytes);
     success = I2CJNI.i2CWrite(1, arduinoAddress, dataBuffer, bytesToSend);
     */
-    success = arduino.write(0, 6);
+
+    success = arduino.write(LightConstants.ARDUINO_REGISTER_ADDRESS.getValue(),
+                            LightConstants.RED_INTAKE_LIGHT_COMMAND.getValue()
+                            );
+
     notUsed = false;
-    SmartDashboard.putNumber("LIGHT COMMAND", 6);
+    currentLightCommand = LightConstants.RED_INTAKE_LIGHT_COMMAND.getValue();
+    //SmartDashboard.putNumber("LIGHT COMMAND", LightConstants.RED_INTAKE_LIGHT_COMMAND.getValue());
   }
 
   public static void turnIntakeBlue() {
@@ -156,9 +183,14 @@ public class Lights extends SubsystemBase {
     ByteBuffer dataBuffer = ByteBuffer.wrap(dataBytes);
     success = I2CJNI.i2CWrite(1, arduinoAddress, dataBuffer, bytesToSend);
     */
-    success = arduino.write(0, 5);
+
+    success = arduino.write(LightConstants.ARDUINO_REGISTER_ADDRESS.getValue(),
+                            LightConstants.BLUE_INTAKE_LIGHT_COMMAND.getValue()
+                            );
+
     notUsed = false;
-    SmartDashboard.putNumber("LIGHT COMMAND", 5);
+    currentLightCommand = LightConstants.BLUE_INTAKE_LIGHT_COMMAND.getValue();
+    //SmartDashboard.putNumber("LIGHT COMMAND", LightConstants.BLUE_INTAKE_LIGHT_COMMAND.getValue());
   }
 
   public static void turnShoot() {
@@ -167,9 +199,14 @@ public class Lights extends SubsystemBase {
     ByteBuffer dataBuffer = ByteBuffer.wrap(dataBytes);
     success = I2CJNI.i2CWrite(1, arduinoAddress, dataBuffer, bytesToSend);
     */
-    success = arduino.write(0, 3);
+
+    success = arduino.write(LightConstants.ARDUINO_REGISTER_ADDRESS.getValue(),
+                            LightConstants.SHOOT_LIGHT_COMMAND.getValue()
+                            );
+
     notUsed = false;
-    SmartDashboard.putNumber("LIGHT COMMAND", 3);
+    currentLightCommand = LightConstants.SHOOT_LIGHT_COMMAND.getValue();
+    //SmartDashboard.putNumber("LIGHT COMMAND", LightConstants.SHOOT_LIGHT_COMMAND.getValue());
   }
 
   public static void turnMars() {
@@ -178,9 +215,14 @@ public class Lights extends SubsystemBase {
     ByteBuffer dataBuffer = ByteBuffer.wrap(dataBytes);
     success = I2CJNI.i2CWrite(1, arduinoAddress, dataBuffer, bytesToSend);
     */
-    success = arduino.write(0, 4);
+
+    success = arduino.write(LightConstants.ARDUINO_REGISTER_ADDRESS.getValue(),
+                            LightConstants.MARS_LIGHT_COMMAND.getValue()
+                            );
+
     notUsed = false;
-    SmartDashboard.putNumber("LIGHT COMMAND", 4);
+    currentLightCommand = LightConstants.MARS_LIGHT_COMMAND.getValue();
+    //SmartDashboard.putNumber("LIGHT COMMAND", LightConstants.MARS_LIGHT_COMMAND.getValue());
   }
 
   public static void inAutonomous() {
@@ -191,6 +233,5 @@ public class Lights extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
   }
 }

@@ -22,12 +22,22 @@ public class PneumaticControl extends SubsystemBase {
  
   /** Creates a new Pneumatics. */
   public PneumaticControl() {
-    pneumaticHub = new PneumaticHub(5);
-    compressor = new Compressor(5, PneumaticsModuleType.REVPH);
+    pneumaticHub = new PneumaticHub(PneumaticControlConstants.REV_PNEUMATIC_HUB_CANID.getValue());
+    
+    compressor = new Compressor(PneumaticControlConstants.REV_PNEUMATIC_HUB_CANID.getValue(),
+                                PneumaticsModuleType.REVPH
+                                );
 
     // In this case, it's connected to channel 0 of a PH with the default CAN ID.
-    articulation = new Solenoid(5, PneumaticsModuleType.REVPH, 99);
-    grip = new Solenoid(5, PneumaticsModuleType.REVPH, 99);
+    articulation = new Solenoid(PneumaticControlConstants.REV_PNEUMATIC_HUB_CANID.getValue(),
+                                PneumaticsModuleType.REVPH,
+                                PneumaticControlConstants.ARTICULATION_SOLENOID_CHANNEL.getValue()
+                                );
+
+    grip = new Solenoid(PneumaticControlConstants.REV_PNEUMATIC_HUB_CANID.getValue(),
+                        PneumaticsModuleType.REVPH,
+                        PneumaticControlConstants.GRIP_SOLENOID_CHANNEL.getValue()
+                        );
 
     createShuffleboard();
   }

@@ -25,12 +25,12 @@ public class Intake extends SubsystemBase {
 
   /** Creates a new Intake. */
   public Intake() {
-    verticalIntake = new SparkMax(99, MotorType.kBrushless);
-    horizontalIntake = new SparkMax(99, MotorType.kBrushless);
+    verticalIntake = new SparkMax(IntakeConstants.VERTICAL_INTAKE_MOTOR_CANID.getValue(), MotorType.kBrushless);
+    horizontalIntake = new SparkMax(IntakeConstants.HORIZONTAL_INTAKE_MOTOR_CANID.getValue(), MotorType.kBrushless);
 
-    irProxLeft = new DigitalInput(99);
-    irProxCenter = new DigitalInput(99);
-    irProxRight = new DigitalInput(99);
+    irProxLeft = new DigitalInput(IntakeConstants.IR_PROX_LEFT_CHANNEL.getValue());
+    irProxCenter = new DigitalInput(IntakeConstants.IR_PROX_CENTER_CHANNEL.getValue());
+    irProxRight = new DigitalInput(IntakeConstants.IR_PROX_RIGHT_CHANNEL.getValue());
 
     verticalSpeed = 0.0;
     horizontalSpeed = 0.0;
