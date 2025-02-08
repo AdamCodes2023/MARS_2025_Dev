@@ -69,7 +69,7 @@ public class Intake extends SubsystemBase {
     return irProxRight.get();
   }
 
-  private boolean hasGamePiece() {
+  public boolean hasGamePiece() {
     return getIRProxLeft() || getIRProxCenter() || getIRProxRight();
   }
 

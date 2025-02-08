@@ -60,7 +60,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         autoFactory = drivetrain.createAutoFactory();
-        autoRoutines = new AutoRoutines(autoFactory, elevator, climber);
+        autoRoutines = new AutoRoutines(autoFactory, climber, elevator, intake, pneumaticControl);
 
         autoChooser.addRoutine("SimplePath", autoRoutines::simplePathAuto);
         autoChooser.addRoutine("ScoreCoralFar", autoRoutines::scoreCoralFarAuto);
