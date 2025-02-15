@@ -64,6 +64,11 @@ public class RobotContainer {
 
         autoChooser.addRoutine("SimplePath", autoRoutines::simplePathAuto);
         autoChooser.addRoutine("ScoreCoralFar", autoRoutines::scoreCoralFarAuto);
+        autoChooser.addRoutine("ScoreCoralMiddle", autoRoutines::scoreCoralMiddleAuto);
+        autoChooser.addRoutine("ScoreCoralClose", autoRoutines::scoreCoralCloseAuto);
+        autoChooser.addRoutine("ScoreTwoCoralFar", autoRoutines::scoreTwoCoralFarAuto);
+        autoChooser.addRoutine("ScoreTwoCoralMiddle", autoRoutines::scoreTwoCoralMiddleAuto);
+        autoChooser.addRoutine("ScoreTwoCoralClose", autoRoutines::scoreTwoCoralCloseAuto);
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
         driveJoystick = new CommandJoystick(0);

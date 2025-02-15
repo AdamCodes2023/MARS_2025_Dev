@@ -89,6 +89,5 @@
   "splits":[0]
  },
  "events":[
-   {"name":"EleUp", "from":{"target":1, "targetTimestamp":0.87001, "offset":{"exp":"0 s", "val":0.0}}, "event":null},
-   {"name":"EjectVert", "from":{"target":2, "targetTimestamp":1.75854, "offset":{"exp":"0 s", "val":0.0}}, "event":null}]
+   {"name":"EleUpScoreBase", "from":{"target":0, "targetTimestamp":0.0, "offset":{"exp":"0 s", "val":0.0}}, "event":null}]
 }
