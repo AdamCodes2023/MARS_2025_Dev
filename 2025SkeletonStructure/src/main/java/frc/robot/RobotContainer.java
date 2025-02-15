@@ -14,10 +14,21 @@ import choreo.auto.AutoFactory;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
+import frc.robot.commands.CloseJaw;
+import frc.robot.commands.ElevatorToAlgaeLevelOne;
+import frc.robot.commands.ElevatorToAlgaeLevelTwo;
+import frc.robot.commands.ElevatorToFeederStation;
+import frc.robot.commands.ElevatorToGround;
+import frc.robot.commands.ElevatorToScoreBase;
+import frc.robot.commands.ElevatorToScoreLevelOne;
+import frc.robot.commands.ElevatorToScoreLevelTwo;
+import frc.robot.commands.IntakePositionDown;
+import frc.robot.commands.IntakePositionUp;
+import frc.robot.commands.OpenJaw;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
@@ -90,32 +101,36 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        Trigger db1 = driveJoystickButtons[1];
-        Trigger db2 = driveJoystickButtons[2];
+        Trigger turboDriveButton = driveJoystickButtons[1];
+        Trigger slowDriveButton = driveJoystickButtons[2];
         Trigger db3 = driveJoystickButtons[3];
-        Trigger quasistaticSysIdForwardButton = driveJoystickButtons[4];
-        Trigger quasistaticSysIdReverseButton = driveJoystickButtons[5];
-        Trigger dynamicSysIdForwardButton = driveJoystickButtons[6];
-        Trigger dynamicSysIdReverseButton = driveJoystickButtons[7];
+        //Trigger quasistaticSysIdForwardButton = driveJoystickButtons[4];
+        //Trigger quasistaticSysIdReverseButton = driveJoystickButtons[5];
+        //Trigger dynamicSysIdForwardButton = driveJoystickButtons[6];
+        //Trigger dynamicSysIdReverseButton = driveJoystickButtons[7];
+        Trigger db4 = driveJoystickButtons[4];
+        Trigger db5 = driveJoystickButtons[5];
+        Trigger db6 = driveJoystickButtons[6];
+        Trigger db7 = driveJoystickButtons[7];
         Trigger db8 = driveJoystickButtons[8];
         Trigger gyroResetButton = driveJoystickButtons[9];
         Trigger brakeButton = driveJoystickButtons[10];
         Trigger xStanceButton = driveJoystickButtons[11];
         
-        Trigger rb1 = rotateJoystickButtons[1];
-        Trigger rb2 = rotateJoystickButtons[2];
-        Trigger rb3 = rotateJoystickButtons[3];
-        Trigger rb4 = rotateJoystickButtons[4];
-        Trigger rb5 = rotateJoystickButtons[5];
-        Trigger rb6 = rotateJoystickButtons[6];
-        Trigger rb7 = rotateJoystickButtons[7];
-        Trigger rb8 = rotateJoystickButtons[8];
-        Trigger rb9 = rotateJoystickButtons[9];
-        Trigger rb10 = rotateJoystickButtons[10];
-        Trigger rb11 = rotateJoystickButtons[11];
+        Trigger groundPosElevatorButton = rotateJoystickButtons[1];
+        Trigger scoreBaseElevatorButton = rotateJoystickButtons[2];
+        Trigger scoreLevelOneElevatorButton = rotateJoystickButtons[3];
+        Trigger scoreLevelTwoElevatorButton = rotateJoystickButtons[4];
+        Trigger feederStationElevatorButton = rotateJoystickButtons[5];
+        Trigger removeAlgaeLevelOneElevatorButton = rotateJoystickButtons[6];
+        Trigger removeAlgaeLevelTwoElevatorButton = rotateJoystickButtons[7];
+        Trigger verticalIntakeInButton = rotateJoystickButtons[8];
+        Trigger verticalIntakeOutButton = rotateJoystickButtons[9];
+        Trigger horizontalIntakeRightButton = rotateJoystickButtons[10];
+        Trigger horizontalIntakeLeftButton = rotateJoystickButtons[11];
 
-        Trigger ex1 = extraJoystickButtons[1];
-        Trigger ex2 = extraJoystickButtons[2];
+        Trigger jawPneumaticsButton = extraJoystickButtons[1];
+        Trigger intakePositionPneumaticsButton = extraJoystickButtons[2];
         Trigger ex3 = extraJoystickButtons[3];
         Trigger ex4 = extraJoystickButtons[4];
         Trigger ex5 = extraJoystickButtons[5];
@@ -137,6 +152,24 @@ public class RobotContainer {
             )
         );
 
+        turboDriveButton.whileTrue(
+            // Drivetrain will execute this command periodically
+            drivetrain.applyRequest(() ->
+                drive.withVelocityX(-driveJoystick.getY() * MaxSpeed * 1.5) // Drive forward with negative Y (forward)
+                    .withVelocityY(-driveJoystick.getX() * MaxSpeed * 1.5) // Drive left with negative X (left)
+                    .withRotationalRate(-rotateJoystick.getX() * MaxAngularRate * 1.5) // Drive counterclockwise with negative X (left)
+            )
+        );
+
+        slowDriveButton.whileTrue(
+            // Drivetrain will execute this command periodically
+            drivetrain.applyRequest(() ->
+                drive.withVelocityX(-driveJoystick.getY() * MaxSpeed * 0.5) // Drive forward with negative Y (forward)
+                    .withVelocityY(-driveJoystick.getX() * MaxSpeed * 0.5) // Drive left with negative X (left)
+                    .withRotationalRate(-rotateJoystick.getX() * MaxAngularRate * 0.5) // Drive counterclockwise with negative X (left)
+            )
+        );
+
         brakeButton.whileTrue(drivetrain.applyRequest(() -> brake));
         xStanceButton.whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-driveJoystick.getY(), -driveJoystick.getX()))
@@ -144,21 +177,44 @@ public class RobotContainer {
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        quasistaticSysIdForwardButton.whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        quasistaticSysIdReverseButton.whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-        dynamicSysIdForwardButton.whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        dynamicSysIdReverseButton.whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        //quasistaticSysIdForwardButton.whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        //quasistaticSysIdReverseButton.whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        //dynamicSysIdForwardButton.whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        //dynamicSysIdReverseButton.whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         
 
-        // reset the field-centric heading on left bumper press
+        // reset the field-centric heading on button press
         gyroResetButton.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
+
+        groundPosElevatorButton.onTrue(new ElevatorToGround(elevator));
+        scoreBaseElevatorButton.onTrue(new ElevatorToScoreBase(elevator));
+        scoreLevelOneElevatorButton.onTrue(new ElevatorToScoreLevelOne(elevator));
+        scoreLevelTwoElevatorButton.onTrue(new ElevatorToScoreLevelTwo(elevator));
+        feederStationElevatorButton.onTrue(new ElevatorToFeederStation(elevator));
+        removeAlgaeLevelOneElevatorButton.onTrue(new ElevatorToAlgaeLevelOne(elevator));
+        removeAlgaeLevelTwoElevatorButton.onTrue(new ElevatorToAlgaeLevelTwo(elevator));
+
+        verticalIntakeInButton.onTrue(Commands.runOnce(() -> intake.runVertical(1.0)));
+        verticalIntakeInButton.onFalse(Commands.runOnce(() -> intake.stopVertical()));
+        verticalIntakeOutButton.onTrue(Commands.runOnce(() -> intake.runVertical(-1.0)));
+        verticalIntakeOutButton.onFalse(Commands.runOnce(() -> intake.stopVertical()));
+        horizontalIntakeRightButton.onTrue(Commands.runOnce(() -> intake.runHorizontal(1.0)));
+        horizontalIntakeRightButton.onFalse(Commands.runOnce(() -> intake.stopHorizontal()));
+        horizontalIntakeLeftButton.onTrue(Commands.runOnce(() -> intake.runHorizontal(-1.0)));
+        horizontalIntakeLeftButton.onFalse(Commands.runOnce(() -> intake.stopHorizontal()));
+
+        jawPneumaticsButton.onTrue(new OpenJaw(pneumaticControl));
+        jawPneumaticsButton.onFalse(new CloseJaw(pneumaticControl));
+        intakePositionPneumaticsButton.onTrue(new IntakePositionDown(pneumaticControl));
+        intakePositionPneumaticsButton.onFalse(new IntakePositionUp(pneumaticControl));
     }
 
     public Command getAutonomousCommand() {
         /* Run the routine selected from the auto chooser */
         return autoChooser.selectedCommand();
+        
         //return Commands.print("No autonomous command configured");
     }
 }

@@ -147,13 +147,40 @@ public class Elevator extends SubsystemBase {
     return currentPos > 0.28 && currentPos < 0.32;
   }
 
-  public void goToFeederStation() {
+  public void goToScoreLevelTwo() {
     elevatorMotor.setControl(mmReq.withPosition(0.4).withSlot(0));
+  }
+
+  public boolean atScoreLevelTwo() {
+    double currentPos = getElevatorPosition();
+    return currentPos > 0.38 && currentPos < 0.42;
+  }
+
+  public void goToFeederStation() {
+    elevatorMotor.setControl(mmReq.withPosition(0.5).withSlot(0));
   }
 
   public boolean atFeederStation() {
     double currentPos = getElevatorPosition();
-    return currentPos > 0.38 && currentPos < 0.42;
+    return currentPos > 0.48 && currentPos < 0.52;
+  }
+
+  public void goToAlgaeLevelOne() {
+    elevatorMotor.setControl(mmReq.withPosition(0.6).withSlot(0));
+  }
+
+  public boolean atAlgaeLevelOne() {
+    double currentPos = getElevatorPosition();
+    return currentPos > 0.58 && currentPos < 0.62;
+  }
+
+  public void goToAlgaeLevelTwo() {
+    elevatorMotor.setControl(mmReq.withPosition(0.7).withSlot(0));
+  }
+
+  public boolean atAlgaeLevelTwo() {
+    double currentPos = getElevatorPosition();
+    return currentPos > 0.68 && currentPos < 0.72;
   }
 
   @Override
