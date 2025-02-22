@@ -5,16 +5,23 @@
 package frc.robot.subsystems.intake;
 
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.lights.Lights;
 
 public class Intake extends SubsystemBase {
   private final SparkMax verticalIntake;
+  private final SparkMaxConfig verticalIntakeConfig;
   private final SparkMax horizontalIntake;
+  private final SparkMaxConfig horizontalIntakeConfig;
 
   private final DigitalInput irProxLeft;
   private final DigitalInput irProxCenter;
@@ -23,10 +30,25 @@ public class Intake extends SubsystemBase {
   private double verticalSpeed;
   private double horizontalSpeed;
 
+  private boolean toggleGamePieceLights;
+
   /** Creates a new Intake. */
   public Intake() {
     verticalIntake = new SparkMax(IntakeConstants.VERTICAL_INTAKE_MOTOR_CANID.getValue(), MotorType.kBrushless);
     horizontalIntake = new SparkMax(IntakeConstants.HORIZONTAL_INTAKE_MOTOR_CANID.getValue(), MotorType.kBrushless);
+
+    verticalIntakeConfig = new SparkMaxConfig();
+    verticalIntakeConfig.smartCurrentLimit(30);
+    verticalIntakeConfig.secondaryCurrentLimit(40);
+    verticalIntakeConfig.idleMode(IdleMode.kCoast);
+
+    horizontalIntakeConfig = new SparkMaxConfig();
+    horizontalIntakeConfig.smartCurrentLimit(30);
+    horizontalIntakeConfig.secondaryCurrentLimit(40);
+    horizontalIntakeConfig.idleMode(IdleMode.kCoast);
+
+    verticalIntake.configure(verticalIntakeConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+    horizontalIntake.configure(horizontalIntakeConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
     irProxLeft = new DigitalInput(IntakeConstants.IR_PROX_LEFT_CHANNEL.getValue());
     irProxCenter = new DigitalInput(IntakeConstants.IR_PROX_CENTER_CHANNEL.getValue());
@@ -35,6 +57,8 @@ public class Intake extends SubsystemBase {
     verticalSpeed = 0.0;
     horizontalSpeed = 0.0;
 
+    toggleGamePieceLights = true;
+
     createShuffleboard();
   }
 
@@ -42,7 +66,9 @@ public class Intake extends SubsystemBase {
     ShuffleboardTab tab = Shuffleboard.getTab("INTAKE");
     tab.add("IntakeSubsystem", this);
     tab.addNumber("VerticalIntakeSpeed", this::getVerticalIntakeSpeed);
+    tab.addNumber("VerticalIntakeCurrent", this::getVerticalIntakeCurrent);
     tab.addNumber("HorizontalIntakeSpeed", this::getHorizontalIntakeSpeed);
+    tab.addNumber("HorizontalIntakeCurrent", this::getHorizontalIntakeCurrent);
     tab.addBoolean("IR_ProxLeft", this::getIRProxLeft);
     tab.addBoolean("IR_ProxCenter", this::getIRProxCenter);
     tab.addBoolean("IR_ProxRight", this::getIRProxRight);
@@ -53,8 +79,16 @@ public class Intake extends SubsystemBase {
     return verticalSpeed;
   }
 
+  private double getVerticalIntakeCurrent() {
+    return verticalIntake.getOutputCurrent();
+  }
+
   private double getHorizontalIntakeSpeed() {
     return horizontalSpeed;
+  }
+
+  private double getHorizontalIntakeCurrent() {
+    return horizontalIntake.getOutputCurrent();
   }
 
   private boolean getIRProxLeft() {
@@ -96,5 +130,14 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (hasGamePiece() && toggleGamePieceLights) {
+      Lights.turnIntakeHasGamePiece();
+      toggleGamePieceLights = false;
+    }
+
+    if (!hasGamePiece() && !toggleGamePieceLights) {
+      Lights.turnOffIntake();
+      toggleGamePieceLights = true;
+    }
   }
 }

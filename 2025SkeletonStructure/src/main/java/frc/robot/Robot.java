@@ -25,9 +25,9 @@ public class Robot extends TimedRobot {
 
     Lights.inAutonomous();
     if (!Lights.inAuto) {
-      if (Lights.notUsed) {
-        Lights.getAllianceLights();
-      }
+      //if (Lights.notUsed) {
+      Lights.getAllianceLights();
+      //}
     } else {
       Lights.turnMars();
     }
@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    Lights.notUsed = true;
+    //Lights.notUsed = true;
   }
 
   @Override

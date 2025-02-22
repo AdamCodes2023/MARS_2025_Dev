@@ -10,8 +10,7 @@ import frc.robot.subsystems.pneumatics.PneumaticControl;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakePositionUp extends Command {
   private final PneumaticControl pneumatics;
-
-  /** Creates a new IntakePositionUp. */
+  /** Creates a new IntakePositionDown. */
   public IntakePositionUp(PneumaticControl argPneumaticControl) {
     pneumatics = argPneumaticControl;
 
@@ -30,7 +29,7 @@ public class IntakePositionUp extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    pneumatics.articulationOff();
+    pneumatics.articulationReverse();
   }
 
   // Returns true when the command should end.

@@ -51,7 +51,7 @@ public class Elevator extends SubsystemBase {
     encoderConfiguration = new CANcoderConfiguration();
 
     /** Motor Output Configs */
-    elevatorConfiguration.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    elevatorConfiguration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     elevatorConfiguration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
     /** Feedback Configs */
@@ -77,6 +77,10 @@ public class Elevator extends SubsystemBase {
     /** Absolute Encoder Configs */
     //encoderConfiguration.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
 
+    elevatorConfiguration.Feedback = feedback;
+    elevatorConfiguration.MotionMagic = motionMagic;
+    elevatorConfiguration.Slot0 = slot0;
+
     elevatorMotor.getConfigurator().apply(elevatorConfiguration);
     elevatorEncoder.getConfigurator().apply(encoderConfiguration);
 
@@ -101,10 +105,16 @@ public class Elevator extends SubsystemBase {
 
   private double getElevatorPosition() {
     return elevatorEncoder.getAbsolutePosition().getValueAsDouble();
+    //return elevatorEncoder.getPosition().getValueAsDouble();
+  }
+
+  private void resetElevatorPosition() {
+    elevatorEncoder.setPosition(0.0);
   }
 
   private double getElevatorCurrent() {
-    return elevatorMotor.getTorqueCurrent().getValueAsDouble();
+    return elevatorMotor.getSupplyCurrent().getValueAsDouble();
+    //return elevatorMotor.getTorqueCurrent().getValueAsDouble();
   }
 
   private boolean getHardStopBottom() {
@@ -188,6 +198,9 @@ public class Elevator extends SubsystemBase {
     // This method will be called once per scheduler run
     if (getHardStopBottom() || getHardStopTop()) {
       if (looking) {
+        if (getHardStopBottom()) {
+          resetElevatorPosition();
+        }
         stopMotor();
         looking = false;
       }

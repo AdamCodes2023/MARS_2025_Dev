@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.CloseJaw;
 import frc.robot.commands.ElevatorToAlgaeLevelOne;
 import frc.robot.commands.ElevatorToAlgaeLevelTwo;
@@ -48,6 +47,12 @@ public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
+    private double turboDriveMultiplier = 1.5;
+    private double slowDriveMultiplier = 0.5;
+
+    private double verticalIntakeSpeed = 1.0;
+    private double horizontalIntakeSpeed = 1.0;
+
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -74,12 +79,16 @@ public class RobotContainer {
         autoRoutines = new AutoRoutines(autoFactory, climber, elevator, intake, pneumaticControl);
 
         autoChooser.addRoutine("SimplePath", autoRoutines::simplePathAuto);
+        autoChooser.addRoutine("SimpleMultiPath", autoRoutines::simpleMultiPathAuto);
         autoChooser.addRoutine("ScoreCoralFar", autoRoutines::scoreCoralFarAuto);
         autoChooser.addRoutine("ScoreCoralMiddle", autoRoutines::scoreCoralMiddleAuto);
         autoChooser.addRoutine("ScoreCoralClose", autoRoutines::scoreCoralCloseAuto);
         autoChooser.addRoutine("ScoreTwoCoralFar", autoRoutines::scoreTwoCoralFarAuto);
         autoChooser.addRoutine("ScoreTwoCoralMiddle", autoRoutines::scoreTwoCoralMiddleAuto);
         autoChooser.addRoutine("ScoreTwoCoralClose", autoRoutines::scoreTwoCoralCloseAuto);
+        autoChooser.addRoutine("ScoreThreeCoralFar", autoRoutines::scoreThreeCoralFarAuto);
+        autoChooser.addRoutine("ScoreThreeCoralMiddle", autoRoutines::scoreThreeCoralMiddleAuto);
+        autoChooser.addRoutine("ScoreThreeCoralClose", autoRoutines::scoreThreeCoralCloseAuto);
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
         driveJoystick = new CommandJoystick(0);
@@ -155,18 +164,18 @@ public class RobotContainer {
         turboDriveButton.whileTrue(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-driveJoystick.getY() * MaxSpeed * 1.5) // Drive forward with negative Y (forward)
-                    .withVelocityY(-driveJoystick.getX() * MaxSpeed * 1.5) // Drive left with negative X (left)
-                    .withRotationalRate(-rotateJoystick.getX() * MaxAngularRate * 1.5) // Drive counterclockwise with negative X (left)
+                drive.withVelocityX(-driveJoystick.getY() * MaxSpeed * turboDriveMultiplier) // Drive forward with negative Y (forward)
+                    .withVelocityY(-driveJoystick.getX() * MaxSpeed * turboDriveMultiplier) // Drive left with negative X (left)
+                    .withRotationalRate(-rotateJoystick.getX() * MaxAngularRate * turboDriveMultiplier) // Drive counterclockwise with negative X (left)
             )
         );
 
         slowDriveButton.whileTrue(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-driveJoystick.getY() * MaxSpeed * 0.5) // Drive forward with negative Y (forward)
-                    .withVelocityY(-driveJoystick.getX() * MaxSpeed * 0.5) // Drive left with negative X (left)
-                    .withRotationalRate(-rotateJoystick.getX() * MaxAngularRate * 0.5) // Drive counterclockwise with negative X (left)
+                drive.withVelocityX(-driveJoystick.getY() * MaxSpeed * slowDriveMultiplier) // Drive forward with negative Y (forward)
+                    .withVelocityY(-driveJoystick.getX() * MaxSpeed * slowDriveMultiplier) // Drive left with negative X (left)
+                    .withRotationalRate(-rotateJoystick.getX() * MaxAngularRate * slowDriveMultiplier) // Drive counterclockwise with negative X (left)
             )
         );
 
@@ -196,13 +205,13 @@ public class RobotContainer {
         removeAlgaeLevelOneElevatorButton.onTrue(new ElevatorToAlgaeLevelOne(elevator));
         removeAlgaeLevelTwoElevatorButton.onTrue(new ElevatorToAlgaeLevelTwo(elevator));
 
-        verticalIntakeInButton.onTrue(Commands.runOnce(() -> intake.runVertical(1.0)));
+        verticalIntakeInButton.onTrue(Commands.runOnce(() -> intake.runVertical(verticalIntakeSpeed)));
         verticalIntakeInButton.onFalse(Commands.runOnce(() -> intake.stopVertical()));
-        verticalIntakeOutButton.onTrue(Commands.runOnce(() -> intake.runVertical(-1.0)));
+        verticalIntakeOutButton.onTrue(Commands.runOnce(() -> intake.runVertical(-verticalIntakeSpeed)));
         verticalIntakeOutButton.onFalse(Commands.runOnce(() -> intake.stopVertical()));
-        horizontalIntakeRightButton.onTrue(Commands.runOnce(() -> intake.runHorizontal(1.0)));
+        horizontalIntakeRightButton.onTrue(Commands.runOnce(() -> intake.runHorizontal(horizontalIntakeSpeed)));
         horizontalIntakeRightButton.onFalse(Commands.runOnce(() -> intake.stopHorizontal()));
-        horizontalIntakeLeftButton.onTrue(Commands.runOnce(() -> intake.runHorizontal(-1.0)));
+        horizontalIntakeLeftButton.onTrue(Commands.runOnce(() -> intake.runHorizontal(-horizontalIntakeSpeed)));
         horizontalIntakeLeftButton.onFalse(Commands.runOnce(() -> intake.stopHorizontal()));
 
         jawPneumaticsButton.onTrue(new OpenJaw(pneumaticControl));

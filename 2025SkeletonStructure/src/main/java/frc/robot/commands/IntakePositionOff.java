@@ -8,10 +8,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.pneumatics.PneumaticControl;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class IntakePositionDown extends Command {
+public class IntakePositionOff extends Command {
   private final PneumaticControl pneumatics;
-  /** Creates a new IntakePositionDown. */
-  public IntakePositionDown(PneumaticControl argPneumaticControl) {
+
+  /** Creates a new IntakePositionUp. */
+  public IntakePositionOff(PneumaticControl argPneumaticControl) {
     pneumatics = argPneumaticControl;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -29,7 +30,7 @@ public class IntakePositionDown extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    pneumatics.articulationForward();
+    pneumatics.articulationOff();
   }
 
   // Returns true when the command should end.

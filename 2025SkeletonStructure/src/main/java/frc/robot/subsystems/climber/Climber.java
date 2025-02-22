@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems.climber;
 
+import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.Seconds;
+
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.NeutralOut;
@@ -21,6 +25,7 @@ public class Climber extends SubsystemBase {
   private final DutyCycleOut climberOut;
   private final TalonFX climberMotor;
   private final TalonFXConfiguration climberConfiguration;
+  private final CurrentLimitsConfigs climberCurrentConfiguration;
   private final DigitalInput leftAttachment;
   private final DigitalInput rightAttachment;
   private final DigitalInput bottomLimit;
@@ -40,6 +45,17 @@ public class Climber extends SubsystemBase {
     climberConfiguration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     climberConfiguration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
+    climberCurrentConfiguration = new CurrentLimitsConfigs();
+    climberCurrentConfiguration.withSupplyCurrentLowerLimit(Amps.of(50)) // Default limit of 50 A
+      .withSupplyCurrentLimit(Amps.of(20)) // Reduce the limit to 20 A if we've limited to 50 A...
+      .withSupplyCurrentLowerTime(Seconds.of(1.0)) // ...for at least 1 second
+      .withSupplyCurrentLimitEnable(true); // And enable it
+
+    climberCurrentConfiguration.withStatorCurrentLimit(Amps.of(120)) // Limit stator current to 120 A
+      .withStatorCurrentLimitEnable(true); // And enable it
+
+    climberConfiguration.CurrentLimits = climberCurrentConfiguration;
+
     climberMotor.getConfigurator().apply(climberConfiguration);
 
     climberMotor.setSafetyEnabled(false);
@@ -58,6 +74,7 @@ public class Climber extends SubsystemBase {
     ShuffleboardTab tab = Shuffleboard.getTab("CLIMBER");
     tab.add("ClimberSubsystem", this);
     tab.addNumber("Output", this::getClimberOutput);
+    tab.addNumber("Current", this::getClimberCurrent);
     tab.addBoolean("LeftAttachment", this::getLeftAttachment);
     tab.addBoolean("RightAttachment", this::getRightAttachment);
     tab.addBoolean("BottomLimit", this::getBottomLimit);
@@ -66,6 +83,11 @@ public class Climber extends SubsystemBase {
 
   private double getClimberOutput() {
     return climberOut.Output;
+  }
+
+  private double getClimberCurrent() {
+    return climberMotor.getSupplyCurrent().getValueAsDouble();
+    //return climberMotor.getStatorCurrent().getValueAsDouble();
   }
   
   private boolean getLeftAttachment() {

@@ -7,8 +7,9 @@ package frc.robot.subsystems.pneumatics;
 /** Add your docs here. */
 public enum PneumaticControlConstants {
     REV_PNEUMATIC_HUB_CANID(5),
-    ARTICULATION_SOLENOID_CHANNEL(0),
-    GRIP_SOLENOID_CHANNEL(1);
+    ARTICULATION_SOLENOID_FORWARD_CHANNEL(0),
+    ARTICULATION_SOLENOID_REVERSE_CHANNEL(1),
+    GRIP_SOLENOID_CHANNEL(2);
     
 
     private int value = 0;
