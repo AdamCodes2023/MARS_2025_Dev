@@ -34,6 +34,7 @@ public class Lights extends SubsystemBase {
 
   //public static boolean notUsed = true;
   public static boolean inAuto = false;
+  public static boolean climbMode = false;
 
   /** Creates a new Lights. */
   /*
@@ -243,6 +244,36 @@ public class Lights extends SubsystemBase {
 
     //notUsed = true;
     currentElevatorLightCommand = LightConstants.LEVEL_THREE_ELEVATOR_LIGHT_COMMAND.getValue();
+  }
+
+  public static void turnClimberLeftAttachment() {
+    /*
+    byte[] dataBytes = {0};
+    ByteBuffer dataBuffer = ByteBuffer.wrap(dataBytes);
+    success = I2CJNI.i2CWrite(1, arduinoAddress, dataBuffer, bytesToSend);
+    */
+
+    elevatorSendSuccess = elevatorArduino.write(LightConstants.ARDUINO_REGISTER_ADDRESS.getValue(),
+                            LightConstants.LEFT_ATTACHMENT_ELEVATOR_LIGHT_COMMAND.getValue()
+                            );
+
+    //notUsed = true;
+    currentElevatorLightCommand = LightConstants.LEFT_ATTACHMENT_ELEVATOR_LIGHT_COMMAND.getValue();
+  }
+
+  public static void turnClimberRightAttachment() {
+    /*
+    byte[] dataBytes = {0};
+    ByteBuffer dataBuffer = ByteBuffer.wrap(dataBytes);
+    success = I2CJNI.i2CWrite(1, arduinoAddress, dataBuffer, bytesToSend);
+    */
+
+    elevatorSendSuccess = elevatorArduino.write(LightConstants.ARDUINO_REGISTER_ADDRESS.getValue(),
+                            LightConstants.RIGHT_ATTACHMENT_ELEVATOR_LIGHT_COMMAND.getValue()
+                            );
+
+    //notUsed = true;
+    currentElevatorLightCommand = LightConstants.RIGHT_ATTACHMENT_ELEVATOR_LIGHT_COMMAND.getValue();
   }
 
   public static void turnOffIntake() {

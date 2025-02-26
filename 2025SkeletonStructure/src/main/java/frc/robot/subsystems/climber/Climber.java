@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.subsystems.lights.Lights;
+
 public class Climber extends SubsystemBase {
   private final NeutralOut stop;
   private final DutyCycleOut climberOut;
@@ -126,6 +128,19 @@ public class Climber extends SubsystemBase {
       }
     } else {
       looking = true;
+    }
+
+    if (getLeftAttachment() || getRightAttachment()) {
+      Lights.climbMode = true;
+      if (getLeftAttachment()) {
+        Lights.turnClimberLeftAttachment();
+      }
+      if (getRightAttachment()) {
+        Lights.turnClimberRightAttachment();
+      }
+    } else {
+      Lights.climbMode = false;
+      //Lights.turnOffElevator();
     }
   }
 }

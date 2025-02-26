@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.lights.Lights;
 
 public class Elevator extends SubsystemBase {
   private final NeutralOut stop;
@@ -206,6 +207,18 @@ public class Elevator extends SubsystemBase {
       }
     } else {
       looking = true;
+    }
+
+    if (!Lights.climbMode) {
+      if (getElevatorPosition() < 0.12) {
+        Lights.turnElevatorLevelZero();
+      } else if (getElevatorPosition() >= 0.12 && getElevatorPosition() < 0.22) {
+        Lights.turnElevatorLevelOne();
+      } else if (getElevatorPosition() >= 0.22 && getElevatorPosition() < 0.32) {
+        Lights.turnElevatorLevelTwo();
+      } else {
+        Lights.turnElevatorLevelThree();
+      }
     }
   }
 }

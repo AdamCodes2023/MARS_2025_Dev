@@ -31,6 +31,8 @@ public class Intake extends SubsystemBase {
   private double horizontalSpeed;
 
   private boolean toggleGamePieceLights;
+  private boolean toggleVerticalLights;
+  private boolean toggleHorizontalLights;
 
   /** Creates a new Intake. */
   public Intake() {
@@ -58,6 +60,8 @@ public class Intake extends SubsystemBase {
     horizontalSpeed = 0.0;
 
     toggleGamePieceLights = true;
+    toggleVerticalLights = true;
+    toggleHorizontalLights = true;
 
     createShuffleboard();
   }
@@ -135,9 +139,35 @@ public class Intake extends SubsystemBase {
       toggleGamePieceLights = false;
     }
 
+    // POSSIBLY UNNECESSARY
     if (!hasGamePiece() && !toggleGamePieceLights) {
       Lights.turnOffIntake();
       toggleGamePieceLights = true;
+    }
+    //
+
+    if (!hasGamePiece() && getVerticalIntakeSpeed() != 0.0) {
+      Lights.turnIntakeVerticalRunning();
+      toggleVerticalLights = false;
+    }
+
+    if (getVerticalIntakeSpeed() == 0.0 && !toggleVerticalLights) {
+      toggleVerticalLights = true;
+      if (!hasGamePiece()) {
+        Lights.turnOffIntake();
+      }
+    }
+
+    if (!hasGamePiece() && getHorizontalIntakeSpeed() != 0.0) {
+      Lights.turnIntakeHorizontalRunning();
+      toggleHorizontalLights = false;
+    }
+
+    if (getHorizontalIntakeSpeed() == 0.0 && !toggleHorizontalLights) {
+      toggleHorizontalLights = true;
+      if (!hasGamePiece()) {
+        Lights.turnOffIntake();
+      }
     }
   }
 }
