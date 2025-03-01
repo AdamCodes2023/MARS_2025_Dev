@@ -128,12 +128,12 @@ public class RobotContainer {
         Trigger xStanceButton = driveJoystickButtons[11];
         
         Trigger groundPosElevatorButton = rotateJoystickButtons[1];
-        Trigger scoreBaseElevatorButton = rotateJoystickButtons[2];
-        Trigger scoreLevelOneElevatorButton = rotateJoystickButtons[3];
-        Trigger scoreLevelTwoElevatorButton = rotateJoystickButtons[4];
+        Trigger scoreLevelOneElevatorButton = rotateJoystickButtons[2];
+        Trigger scoreLevelTwoElevatorButton = rotateJoystickButtons[3];
+        Trigger removeAlgaeLevelTwoElevatorButton = rotateJoystickButtons[4];
         Trigger feederStationElevatorButton = rotateJoystickButtons[5];
+        //Trigger scoreBaseElevatorButton = rotateJoystickButtons[2];
         //Trigger removeAlgaeLevelOneElevatorButton = rotateJoystickButtons[6];
-        //Trigger removeAlgaeLevelTwoElevatorButton = rotateJoystickButtons[7];
         Trigger manualElevatorAdjustmentUpButton = rotateJoystickButtons[6];
         Trigger manualElevatorAdjustmentDownButton = rotateJoystickButtons[7];
         Trigger verticalIntakeInButton = rotateJoystickButtons[8];
@@ -204,12 +204,12 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
         groundPosElevatorButton.onTrue(new ElevatorToGround(elevator));
-        scoreBaseElevatorButton.onTrue(new ElevatorToScoreBase(elevator));
+        //scoreBaseElevatorButton.onTrue(new ElevatorToScoreBase(elevator));
         scoreLevelOneElevatorButton.onTrue(new ElevatorToScoreLevelOne(elevator));
         scoreLevelTwoElevatorButton.onTrue(new ElevatorToScoreLevelTwo(elevator));
         feederStationElevatorButton.onTrue(new ElevatorToFeederStation(elevator));
         //removeAlgaeLevelOneElevatorButton.onTrue(new ElevatorToAlgaeLevelOne(elevator));
-        //removeAlgaeLevelTwoElevatorButton.onTrue(new ElevatorToAlgaeLevelTwo(elevator));
+        removeAlgaeLevelTwoElevatorButton.onTrue(new ElevatorToAlgaeLevelTwo(elevator));
         manualElevatorAdjustmentUpButton.onTrue(Commands.runOnce(() -> elevator.manualElevatorAdjustmentUp()));
         manualElevatorAdjustmentUpButton.onFalse(Commands.runOnce(() -> elevator.stopMotor()));
         manualElevatorAdjustmentDownButton.onTrue(Commands.runOnce(() -> elevator.manualElevatorAdjustmentDown()));

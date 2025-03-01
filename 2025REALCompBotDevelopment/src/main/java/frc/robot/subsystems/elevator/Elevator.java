@@ -159,39 +159,43 @@ public class Elevator extends SubsystemBase {
   }
 
   public void goToScoreBase() {
-    elevatorMotor.setControl(mmReq.withPosition(1.0).withSlot(0));
+    //elevatorMotor.setControl(mmReq.withPosition(1.0).withSlot(0));
+    goToGround();
   }
 
   public boolean atScoreBase() {
+    /*
     double currentPos = getElevatorPosition();
     return currentPos > 0.98 && currentPos < 1.02;
+    */
+    return atGround();
   }
 
   public void goToScoreLevelOne() {
-    elevatorMotor.setControl(mmReq.withPosition(0.3).withSlot(0));
+    elevatorMotor.setControl(mmReq.withPosition(1.5).withSlot(0));
   }
 
   public boolean atScoreLevelOne() {
     double currentPos = getElevatorPosition();
-    return currentPos > 0.28 && currentPos < 0.32;
+    return currentPos > 1.48 && currentPos < 1.52;
   }
 
   public void goToScoreLevelTwo() {
-    elevatorMotor.setControl(mmReq.withPosition(0.4).withSlot(0));
+    elevatorMotor.setControl(mmReq.withPosition(4.4).withSlot(0));
   }
 
   public boolean atScoreLevelTwo() {
     double currentPos = getElevatorPosition();
-    return currentPos > 0.38 && currentPos < 0.42;
+    return currentPos > 4.38 && currentPos < 4.42;
   }
 
   public void goToFeederStation() {
-    elevatorMotor.setControl(mmReq.withPosition(0.5).withSlot(0));
+    elevatorMotor.setControl(mmReq.withPosition(1.0).withSlot(0));
   }
 
   public boolean atFeederStation() {
     double currentPos = getElevatorPosition();
-    return currentPos > 0.48 && currentPos < 0.52;
+    return currentPos > 0.98 && currentPos < 1.02;
   }
 
   public void goToAlgaeLevelOne() {
@@ -204,12 +208,12 @@ public class Elevator extends SubsystemBase {
   }
 
   public void goToAlgaeLevelTwo() {
-    elevatorMotor.setControl(mmReq.withPosition(0.7).withSlot(0));
+    elevatorMotor.setControl(mmReq.withPosition(4.8).withSlot(0));
   }
 
   public boolean atAlgaeLevelTwo() {
     double currentPos = getElevatorPosition();
-    return currentPos > 0.68 && currentPos < 0.72;
+    return currentPos > 4.78 && currentPos < 4.82;
   }
 
   @Override
@@ -228,11 +232,11 @@ public class Elevator extends SubsystemBase {
     }
 
     if (!Lights.climbMode) {
-      if (getElevatorPosition() < 0.12) {
+      if (getElevatorPosition() < 1.00) {
         Lights.turnElevatorLevelZero();
-      } else if (getElevatorPosition() >= 0.12 && getElevatorPosition() < 0.22) {
+      } else if (getElevatorPosition() >= 1.00 && getElevatorPosition() < 2.00) {
         Lights.turnElevatorLevelOne();
-      } else if (getElevatorPosition() >= 0.22 && getElevatorPosition() < 0.32) {
+      } else if (getElevatorPosition() >= 2.00 && getElevatorPosition() < 3.00) {
         Lights.turnElevatorLevelTwo();
       } else {
         Lights.turnElevatorLevelThree();
