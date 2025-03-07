@@ -96,15 +96,15 @@ public class Intake extends SubsystemBase {
   }
 
   private boolean getIRProxLeft() {
-    return irProxLeft.get();
+    return !irProxLeft.get();
   }
 
   private boolean getIRProxCenter() {
-    return irProxCenter.get();
+    return !irProxCenter.get();
   }
 
   private boolean getIRProxRight() {
-    return irProxRight.get();
+    return !irProxRight.get();
   }
 
   public boolean hasGamePiece() {
@@ -146,8 +146,12 @@ public class Intake extends SubsystemBase {
     }
     //
 
-    if (!hasGamePiece() && getVerticalIntakeSpeed() != 0.0) {
-      Lights.turnIntakeVerticalRunning();
+    if (getVerticalIntakeSpeed() != 0.0 && toggleVerticalLights) {
+      if (getVerticalIntakeSpeed() < 0.0) {
+        Lights.turnIntakeVerticalRunning();
+      } else {
+        Lights.turnEjectVerticalRunning();
+      }
       toggleVerticalLights = false;
     }
 
@@ -156,9 +160,10 @@ public class Intake extends SubsystemBase {
       if (!hasGamePiece()) {
         Lights.turnOffIntake();
       }
+      toggleGamePieceLights = true;
     }
 
-    if (!hasGamePiece() && getHorizontalIntakeSpeed() != 0.0) {
+    if (getHorizontalIntakeSpeed() != 0.0 && toggleHorizontalLights) {
       Lights.turnIntakeHorizontalRunning();
       toggleHorizontalLights = false;
     }
@@ -168,6 +173,7 @@ public class Intake extends SubsystemBase {
       if (!hasGamePiece()) {
         Lights.turnOffIntake();
       }
+      toggleGamePieceLights = true;
     }
   }
 }

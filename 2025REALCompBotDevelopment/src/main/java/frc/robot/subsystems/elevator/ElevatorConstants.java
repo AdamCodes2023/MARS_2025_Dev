@@ -8,8 +8,8 @@ package frc.robot.subsystems.elevator;
 public enum ElevatorConstants {
     ELEVATOR_MOTOR_CANID(30),
     ELEVATOR_CANCODER_CANID(24),
-    HARD_STOP_BOTTOM_CHANNEL(2),
-    HARD_STOP_TOP_CHANNEL(0);
+    HARD_STOP_BOTTOM_CHANNEL(3),
+    HARD_STOP_TOP_CHANNEL(4);
 
     private int value = 0;
 

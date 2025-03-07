@@ -137,14 +137,9 @@ public class Climber extends SubsystemBase {
     }
     */
 
-    if (getLeftAttachment() || getRightAttachment()) {
+    if (getLeftAttachment() && getRightAttachment()) {
       Lights.climbMode = true;
-      if (getLeftAttachment()) {
-        Lights.turnClimberLeftAttachment();
-      }
-      if (getRightAttachment()) {
-        Lights.turnClimberRightAttachment();
-      }
+      Lights.turnClimberAttachment();
     } else {
       Lights.climbMode = false;
       //Lights.turnOffElevator();

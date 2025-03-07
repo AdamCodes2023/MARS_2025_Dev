@@ -8,9 +8,9 @@ package frc.robot.subsystems.intake;
 public enum IntakeConstants {
     VERTICAL_INTAKE_MOTOR_CANID(33),
     HORIZONTAL_INTAKE_MOTOR_CANID(32),
-    IR_PROX_LEFT_CHANNEL(4),
-    IR_PROX_CENTER_CHANNEL(5),
-    IR_PROX_RIGHT_CHANNEL(6);
+    IR_PROX_LEFT_CHANNEL(5),
+    IR_PROX_CENTER_CHANNEL(6),
+    IR_PROX_RIGHT_CHANNEL(7);
 
     private int value = 0;
 

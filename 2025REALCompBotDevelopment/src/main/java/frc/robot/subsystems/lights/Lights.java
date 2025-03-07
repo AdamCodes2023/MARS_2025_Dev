@@ -246,7 +246,7 @@ public class Lights extends SubsystemBase {
     currentElevatorLightCommand = LightConstants.LEVEL_THREE_ELEVATOR_LIGHT_COMMAND.getValue();
   }
 
-  public static void turnClimberLeftAttachment() {
+  public static void turnElevatorLevelFour() {
     /*
     byte[] dataBytes = {0};
     ByteBuffer dataBuffer = ByteBuffer.wrap(dataBytes);
@@ -254,14 +254,14 @@ public class Lights extends SubsystemBase {
     */
 
     elevatorSendSuccess = elevatorArduino.write(LightConstants.ARDUINO_REGISTER_ADDRESS.getValue(),
-                            LightConstants.LEFT_ATTACHMENT_ELEVATOR_LIGHT_COMMAND.getValue()
+                            LightConstants.LEVEL_FOUR_ELEVATOR_LIGHT_COMMAND.getValue()
                             );
 
     //notUsed = true;
-    currentElevatorLightCommand = LightConstants.LEFT_ATTACHMENT_ELEVATOR_LIGHT_COMMAND.getValue();
+    currentElevatorLightCommand = LightConstants.LEVEL_FOUR_ELEVATOR_LIGHT_COMMAND.getValue();
   }
 
-  public static void turnClimberRightAttachment() {
+  public static void turnClimberAttachment() {
     /*
     byte[] dataBytes = {0};
     ByteBuffer dataBuffer = ByteBuffer.wrap(dataBytes);
@@ -269,11 +269,11 @@ public class Lights extends SubsystemBase {
     */
 
     elevatorSendSuccess = elevatorArduino.write(LightConstants.ARDUINO_REGISTER_ADDRESS.getValue(),
-                            LightConstants.RIGHT_ATTACHMENT_ELEVATOR_LIGHT_COMMAND.getValue()
+                            LightConstants.ATTACHMENT_ELEVATOR_LIGHT_COMMAND.getValue()
                             );
 
     //notUsed = true;
-    currentElevatorLightCommand = LightConstants.RIGHT_ATTACHMENT_ELEVATOR_LIGHT_COMMAND.getValue();
+    currentElevatorLightCommand = LightConstants.ATTACHMENT_ELEVATOR_LIGHT_COMMAND.getValue();
   }
 
   public static void turnOffIntake() {
@@ -306,19 +306,19 @@ public class Lights extends SubsystemBase {
     currentIntakeLightCommand = LightConstants.VERTICAL_RUNNING_INTAKE_LIGHT_COMMAND.getValue();
   }
 
-  public static void turnIntakeHorizontalRunning() {
+  public static void turnEjectVerticalRunning() {
     /*
-    byte[] dataBytes = {5};
+    byte[] dataBytes = {6};
     ByteBuffer dataBuffer = ByteBuffer.wrap(dataBytes);
     success = I2CJNI.i2CWrite(1, arduinoAddress, dataBuffer, bytesToSend);
     */
 
     intakeSendSuccess = intakeArduino.write(LightConstants.ARDUINO_REGISTER_ADDRESS.getValue(),
-                            LightConstants.HORIZONTAL_RUNNING_INTAKE_LIGHT_COMMAND.getValue()
+                            LightConstants.VERTICAL_RUNNING_EJECT_LIGHT_COMMAND.getValue()
                             );
 
     //notUsed = false;
-    currentIntakeLightCommand = LightConstants.HORIZONTAL_RUNNING_INTAKE_LIGHT_COMMAND.getValue();
+    currentIntakeLightCommand = LightConstants.VERTICAL_RUNNING_EJECT_LIGHT_COMMAND.getValue();
   }
 
   public static void turnIntakeHasGamePiece() {
@@ -334,6 +334,21 @@ public class Lights extends SubsystemBase {
 
     //notUsed = false;
     currentIntakeLightCommand = LightConstants.GAME_PIECE_INTAKE_LIGHT_COMMAND.getValue();
+  }
+
+  public static void turnIntakeHorizontalRunning() {
+    /*
+    byte[] dataBytes = {5};
+    ByteBuffer dataBuffer = ByteBuffer.wrap(dataBytes);
+    success = I2CJNI.i2CWrite(1, arduinoAddress, dataBuffer, bytesToSend);
+    */
+
+    intakeSendSuccess = intakeArduino.write(LightConstants.ARDUINO_REGISTER_ADDRESS.getValue(),
+                            LightConstants.HORIZONTAL_RUNNING_INTAKE_LIGHT_COMMAND.getValue()
+                            );
+
+    //notUsed = false;
+    currentIntakeLightCommand = LightConstants.HORIZONTAL_RUNNING_INTAKE_LIGHT_COMMAND.getValue();
   }
 
   @Override

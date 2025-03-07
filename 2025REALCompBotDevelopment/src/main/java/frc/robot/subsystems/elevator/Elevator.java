@@ -232,14 +232,18 @@ public class Elevator extends SubsystemBase {
     }
 
     if (!Lights.climbMode) {
-      if (getElevatorPosition() < 1.00) {
+      if (atGround()) {
         Lights.turnElevatorLevelZero();
-      } else if (getElevatorPosition() >= 1.00 && getElevatorPosition() < 2.00) {
+      } else if (atFeederStation()) {
         Lights.turnElevatorLevelOne();
-      } else if (getElevatorPosition() >= 2.00 && getElevatorPosition() < 3.00) {
+      } else if (atScoreLevelOne()) {
         Lights.turnElevatorLevelTwo();
-      } else {
+      } else if (atScoreLevelTwo()) {
         Lights.turnElevatorLevelThree();
+      } else if (atAlgaeLevelTwo()) {
+        Lights.turnElevatorLevelFour();
+      } else {
+        //ENTER DEFAULT CONDITION HERE!
       }
     }
   }
