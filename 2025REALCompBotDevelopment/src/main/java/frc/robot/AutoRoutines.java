@@ -101,6 +101,19 @@ public class AutoRoutines {
         return routine;
     }
 
+    public AutoRoutine scoreCoralSideOneCloseAuto() {
+        final AutoRoutine routine = m_factory.newRoutine("ScoreCoralSideOneClose Auto");
+        final AutoTrajectory scoreCoralSideOneClose = routine.trajectory("ScoreCoralSideOneClose");
+
+        routine.active().onTrue(
+            scoreCoralSideOneClose.resetOdometry()
+                .andThen(scoreCoralSideOneClose.cmd())
+                    .andThen(new WaitCommand(0.5))
+                        .andThen(new EjectGamePieceVertical(m_intake))
+        );
+        return routine;
+    }
+
     public AutoRoutine scoreTwoCoralFarAuto() {
         final AutoRoutine routine = m_factory.newRoutine("ScoreTwoCoralFar Auto");
         final AutoTrajectory scoreCoralFar = routine.trajectory("ScoreCoralFar");

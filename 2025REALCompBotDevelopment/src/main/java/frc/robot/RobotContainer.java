@@ -47,8 +47,9 @@ public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
-    private double turboDriveMultiplier = 1.5;
-    private double slowDriveMultiplier = 0.5;
+    private double turboDriveMultiplier = 1.0;
+    private double regularDriveMultiplier = 0.5;
+    private double slowDriveMultiplier = 0.25;
 
     private double verticalIntakeSpeed = 1.0;
     private double horizontalIntakeSpeed = 1.0;
@@ -84,6 +85,7 @@ public class RobotContainer {
         autoChooser.addRoutine("ScoreCoralFar", autoRoutines::scoreCoralFarAuto);
         autoChooser.addRoutine("ScoreCoralMiddle", autoRoutines::scoreCoralMiddleAuto);
         autoChooser.addRoutine("ScoreCoralClose", autoRoutines::scoreCoralCloseAuto);
+        autoChooser.addRoutine("ScoreCoralSideOneClose", autoRoutines::scoreCoralSideOneCloseAuto);
         autoChooser.addRoutine("ScoreTwoCoralFar", autoRoutines::scoreTwoCoralFarAuto);
         autoChooser.addRoutine("ScoreTwoCoralMiddle", autoRoutines::scoreTwoCoralMiddleAuto);
         autoChooser.addRoutine("ScoreTwoCoralClose", autoRoutines::scoreTwoCoralCloseAuto);
@@ -118,8 +120,10 @@ public class RobotContainer {
         //Trigger quasistaticSysIdReverseButton = driveJoystickButtons[5];
         //Trigger dynamicSysIdForwardButton = driveJoystickButtons[6];
         //Trigger dynamicSysIdReverseButton = driveJoystickButtons[7];
-        Trigger climberUpButton = driveJoystickButtons[4];
-        Trigger climberDownButton = driveJoystickButtons[5];
+        //Trigger climberUpButton = driveJoystickButtons[4];
+        //Trigger climberDownButton = driveJoystickButtons[5];
+        Trigger db4 = driveJoystickButtons[4];
+        Trigger db5 = driveJoystickButtons[5];
         Trigger db6 = driveJoystickButtons[6];
         Trigger db7 = driveJoystickButtons[7];
         Trigger db8 = driveJoystickButtons[8];
@@ -130,25 +134,25 @@ public class RobotContainer {
         Trigger groundPosElevatorButton = rotateJoystickButtons[1];
         Trigger scoreLevelOneElevatorButton = rotateJoystickButtons[2];
         Trigger scoreLevelTwoElevatorButton = rotateJoystickButtons[3];
-        Trigger removeAlgaeLevelTwoElevatorButton = rotateJoystickButtons[4];
-        Trigger feederStationElevatorButton = rotateJoystickButtons[5];
+        Trigger feederStationElevatorButton = rotateJoystickButtons[4];
+        Trigger removeAlgaeLevelTwoElevatorButton = rotateJoystickButtons[5];
         //Trigger scoreBaseElevatorButton = rotateJoystickButtons[2];
         //Trigger removeAlgaeLevelOneElevatorButton = rotateJoystickButtons[6];
-        Trigger manualElevatorAdjustmentUpButton = rotateJoystickButtons[6];
-        Trigger manualElevatorAdjustmentDownButton = rotateJoystickButtons[7];
-        Trigger verticalIntakeInButton = rotateJoystickButtons[8];
-        Trigger verticalIntakeOutButton = rotateJoystickButtons[9];
-        Trigger horizontalIntakeRightButton = rotateJoystickButtons[10];
-        Trigger horizontalIntakeLeftButton = rotateJoystickButtons[11];
+        Trigger verticalIntakeInButton = rotateJoystickButtons[6];
+        Trigger intakePositionPneumaticsButton = rotateJoystickButtons[7];
+        Trigger rb8 = rotateJoystickButtons[8];
+        Trigger rb9 = rotateJoystickButtons[9];
+        Trigger rb10 = rotateJoystickButtons[10];
+        Trigger rb11 = rotateJoystickButtons[11];
 
-        Trigger jawPneumaticsButton = extraJoystickButtons[1];
-        Trigger intakePositionPneumaticsButton = extraJoystickButtons[2];
-        Trigger ex3 = extraJoystickButtons[3];
-        Trigger ex4 = extraJoystickButtons[4];
-        Trigger ex5 = extraJoystickButtons[5];
-        Trigger ex6 = extraJoystickButtons[6];
-        Trigger ex7 = extraJoystickButtons[7];
-        Trigger ex8 = extraJoystickButtons[8];
+        Trigger manualElevatorAdjustmentUpButton = extraJoystickButtons[1];
+        Trigger manualElevatorAdjustmentDownButton = extraJoystickButtons[2];
+        Trigger horizontalIntakeRightButton = extraJoystickButtons[3];
+        Trigger horizontalIntakeLeftButton = extraJoystickButtons[4];
+        Trigger jawPneumaticsButton = extraJoystickButtons[5];
+        Trigger verticalIntakeOutButton = extraJoystickButtons[6];
+        Trigger climberUpButton = extraJoystickButtons[7];
+        Trigger climberDownButton = extraJoystickButtons[8];
         Trigger ex9 = extraJoystickButtons[9];
         Trigger ex10 = extraJoystickButtons[10];
         Trigger ex11 = extraJoystickButtons[11];
@@ -158,8 +162,8 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-driveJoystick.getY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-driveJoystick.getX() * MaxSpeed) // Drive left with negative X (left)
+                drive.withVelocityX(-driveJoystick.getY() * MaxSpeed * regularDriveMultiplier) // Drive forward with negative Y (forward)
+                    .withVelocityY(-driveJoystick.getX() * MaxSpeed * regularDriveMultiplier) // Drive left with negative X (left)
                     .withRotationalRate(-rotateJoystick.getX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
