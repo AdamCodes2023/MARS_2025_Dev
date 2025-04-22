@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+//import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 //import frc.robot.commands.IntakePositionUp;
@@ -16,10 +19,14 @@ public class Robot extends TimedRobot {
 
   private final RobotContainer m_robotContainer;
 
+  private final PowerDistribution powerDistributionHub;
+
   public Robot() {
     Lights.createShuffleboard();
     m_robotContainer = new RobotContainer();
     //defaultPneumaticState = new IntakePositionUp(m_robotContainer.pneumaticControl);
+    //CameraServer.startAutomaticCapture();
+    powerDistributionHub = new PowerDistribution(4, ModuleType.kRev);
   }
 
   @Override
@@ -45,7 +52,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledExit() {}
+  public void disabledExit() {
+    powerDistributionHub.setSwitchableChannel(true);
+  }
 
   @Override
   public void autonomousInit() {

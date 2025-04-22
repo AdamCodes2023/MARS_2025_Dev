@@ -278,4 +278,246 @@ public class AutoRoutines {
         );
         return routine;
     }
+
+    public AutoRoutine scoreCoralFarRightAuto() {
+        final AutoRoutine routine = m_factory.newRoutine("ScoreCoralFarRight Auto");
+        final AutoTrajectory scoreCoralFar = routine.trajectory("ScoreCoralFarRight");
+
+        routine.active().onTrue(
+            scoreCoralFar.resetOdometry()
+                .andThen(scoreCoralFar.cmd())
+                    .andThen(new WaitCommand(0.5))
+                        .andThen(new EjectGamePieceVertical(m_intake))
+        );
+        return routine;
+    }
+
+    public AutoRoutine scoreCoralMiddleRightAuto() {
+        final AutoRoutine routine = m_factory.newRoutine("ScoreCoralMiddleRight Auto");
+        final AutoTrajectory scoreCoralMiddle = routine.trajectory("ScoreCoralMiddleRight");
+
+        routine.active().onTrue(
+            scoreCoralMiddle.resetOdometry()
+                .andThen(scoreCoralMiddle.cmd())
+                    .andThen(new WaitCommand(0.5))
+                        .andThen(new EjectGamePieceVertical(m_intake))
+        );
+        return routine;
+    }
+
+    public AutoRoutine scoreCoralCloseRightAuto() {
+        final AutoRoutine routine = m_factory.newRoutine("ScoreCoralCloseRight Auto");
+        final AutoTrajectory scoreCoralClose = routine.trajectory("ScoreCoralCloseRight");
+
+        routine.active().onTrue(
+            scoreCoralClose.resetOdometry()
+                .andThen(scoreCoralClose.cmd())
+                    .andThen(new WaitCommand(0.5))
+                        .andThen(new EjectGamePieceVertical(m_intake))
+        );
+        return routine;
+    }
+
+    public AutoRoutine scoreTwoCoralFarRightAuto() {
+        final AutoRoutine routine = m_factory.newRoutine("ScoreTwoCoralFarRight Auto");
+        final AutoTrajectory scoreCoralFar = routine.trajectory("ScoreCoralFarRight");
+        final AutoTrajectory goToFeederStationFromSideTwo = routine.trajectory("GetToFeederStationFromSideTwoRight");
+        final AutoTrajectory scoreCoralSideThreeFromFeederStation = routine.trajectory("ScoreCoralSideThreeFromFeederStationRight");
+
+        routine.active().onTrue(
+            scoreCoralFar.resetOdometry()
+                .andThen(scoreCoralFar.cmd())
+                    .andThen(new WaitCommand(0.5))
+                        .andThen(new EjectGamePieceVertical(m_intake))
+                            .andThen(new WaitCommand(0.2))
+                                .andThen(goToFeederStationFromSideTwo.cmd())
+                                    .andThen(new WaitCommand(0.5))
+                                        .andThen(new IntakeGamePiece(m_intake))
+                                            .andThen(new WaitCommand(0.2))
+                                                .andThen(scoreCoralSideThreeFromFeederStation.cmd())
+                                                    .andThen(new WaitCommand(0.5))
+                                                        .andThen(new EjectGamePieceVertical(m_intake))
+        );
+        return routine;
+    }
+
+    public AutoRoutine scoreTwoCoralMiddleRightAuto() {
+        final AutoRoutine routine = m_factory.newRoutine("ScoreTwoCoralMiddleRight Auto");
+        final AutoTrajectory scoreCoralMiddle = routine.trajectory("ScoreCoralMiddleRight");
+        final AutoTrajectory goToFeederStationFromSideTwo = routine.trajectory("GetToFeederStationFromSideTwoRight");
+        final AutoTrajectory scoreCoralSideThreeFromFeederStation = routine.trajectory("ScoreCoralSideThreeFromFeederStationRight");
+
+        routine.active().onTrue(
+            scoreCoralMiddle.resetOdometry()
+                .andThen(scoreCoralMiddle.cmd())
+                    .andThen(new WaitCommand(0.5))
+                        .andThen(new EjectGamePieceVertical(m_intake))
+                            .andThen(new WaitCommand(0.2))
+                                .andThen(goToFeederStationFromSideTwo.cmd())
+                                    .andThen(new WaitCommand(0.5))
+                                        .andThen(new IntakeGamePiece(m_intake))
+                                            .andThen(new WaitCommand(0.2))
+                                                .andThen(scoreCoralSideThreeFromFeederStation.cmd())
+                                                    .andThen(new WaitCommand(0.5))
+                                                        .andThen(new EjectGamePieceVertical(m_intake))
+        );
+        return routine;
+    }
+
+    public AutoRoutine scoreTwoCoralCloseRightAuto() {
+        final AutoRoutine routine = m_factory.newRoutine("ScoreTwoCoralCloseRight Auto");
+        final AutoTrajectory scoreCoralClose = routine.trajectory("ScoreCoralCloseRight");
+        final AutoTrajectory goToFeederStationFromSideTwo = routine.trajectory("GetToFeederStationFromSideTwoRight");
+        final AutoTrajectory scoreCoralSideThreeFromFeederStation = routine.trajectory("ScoreCoralSideThreeFromFeederStationRight");
+
+        routine.active().onTrue(
+            scoreCoralClose.resetOdometry()
+                .andThen(scoreCoralClose.cmd())
+                    .andThen(new WaitCommand(0.5))
+                        .andThen(new EjectGamePieceVertical(m_intake))
+                            .andThen(new WaitCommand(0.2))
+                                .andThen(goToFeederStationFromSideTwo.cmd())
+                                    .andThen(new WaitCommand(0.5))
+                                        .andThen(new IntakeGamePiece(m_intake))
+                                            .andThen(new WaitCommand(0.2))
+                                                .andThen(scoreCoralSideThreeFromFeederStation.cmd())
+                                                    .andThen(new WaitCommand(0.5))
+                                                        .andThen(new EjectGamePieceVertical(m_intake))
+        );
+        return routine;
+    }
+
+    public AutoRoutine scoreThreeCoralFarRightAuto() {
+        final AutoRoutine routine = m_factory.newRoutine("ScoreThreeCoralFarRight Auto");
+        final AutoTrajectory scoreCoralFar = routine.trajectory("ScoreCoralFarRight");
+        final AutoTrajectory goToFeederStationFromSideTwo = routine.trajectory("GetToFeederStationFromSideTwoRight");
+        final AutoTrajectory scoreCoralSideThreeFromFeederStation = routine.trajectory("ScoreCoralSideThreeFromFeederStationRight");
+        final AutoTrajectory goToFeederStationFromSideThree = routine.trajectory("GetToFeederStationFromSideThreeRight");
+
+        routine.active().onTrue(
+            scoreCoralFar.resetOdometry()
+                .andThen(scoreCoralFar.cmd())
+                    .andThen(new WaitCommand(0.5))
+                        .andThen(new EjectGamePieceVertical(m_intake))
+                            .andThen(new WaitCommand(0.2))
+                                .andThen(goToFeederStationFromSideTwo.cmd())
+                                    .andThen(new WaitCommand(0.5))
+                                        .andThen(new IntakeGamePiece(m_intake))
+                                            .andThen(new WaitCommand(0.2))
+                                                .andThen(scoreCoralSideThreeFromFeederStation.cmd())
+                                                    .andThen(new WaitCommand(0.5))
+                                                        .andThen(new EjectGamePieceVertical(m_intake))
+                                                            .andThen(new WaitCommand(0.2))
+                                                                .andThen(goToFeederStationFromSideThree.cmd())
+                                                                    .andThen(new WaitCommand(0.5))
+                                                                        .andThen(new IntakeGamePiece(m_intake))
+                                                                            .andThen(new WaitCommand(0.2))
+                                                                                .andThen(scoreCoralSideThreeFromFeederStation.cmd())
+                                                                                    .andThen(new WaitCommand(0.5))
+                                                                                        .andThen(new EjectGamePieceVertical(m_intake))
+        );
+        return routine;
+    }
+
+    public AutoRoutine scoreThreeCoralMiddleRightAuto() {
+        final AutoRoutine routine = m_factory.newRoutine("ScoreThreeCoralMiddleRight Auto");
+        final AutoTrajectory scoreCoralMiddle = routine.trajectory("ScoreCoralMiddleRight");
+        final AutoTrajectory goToFeederStationFromSideTwo = routine.trajectory("GetToFeederStationFromSideTwoRight");
+        final AutoTrajectory scoreCoralSideThreeFromFeederStation = routine.trajectory("ScoreCoralSideThreeFromFeederStationRight");
+        final AutoTrajectory goToFeederStationFromSideThree = routine.trajectory("GetToFeederStationFromSideThreeRight");
+
+        routine.active().onTrue(
+            scoreCoralMiddle.resetOdometry()
+                .andThen(scoreCoralMiddle.cmd())
+                    .andThen(new WaitCommand(0.5))
+                        .andThen(new EjectGamePieceVertical(m_intake))
+                            .andThen(new WaitCommand(0.2))
+                                .andThen(goToFeederStationFromSideTwo.cmd())
+                                    .andThen(new WaitCommand(0.5))
+                                        .andThen(new IntakeGamePiece(m_intake))
+                                            .andThen(new WaitCommand(0.2))
+                                                .andThen(scoreCoralSideThreeFromFeederStation.cmd())
+                                                    .andThen(new WaitCommand(0.5))
+                                                        .andThen(new EjectGamePieceVertical(m_intake))
+                                                            .andThen(new WaitCommand(0.2))
+                                                                .andThen(goToFeederStationFromSideThree.cmd())
+                                                                    .andThen(new WaitCommand(0.5))
+                                                                        .andThen(new IntakeGamePiece(m_intake))
+                                                                            .andThen(new WaitCommand(0.2))
+                                                                                .andThen(scoreCoralSideThreeFromFeederStation.cmd())
+                                                                                    .andThen(new WaitCommand(0.5))
+                                                                                        .andThen(new EjectGamePieceVertical(m_intake))
+        );
+        return routine;
+    }
+
+    public AutoRoutine scoreThreeCoralCloseRightAuto() {
+        final AutoRoutine routine = m_factory.newRoutine("ScoreThreeCoralCloseRight Auto");
+        final AutoTrajectory scoreCoralClose = routine.trajectory("ScoreCoralCloseRight");
+        final AutoTrajectory goToFeederStationFromSideTwo = routine.trajectory("GetToFeederStationFromSideTwoRight");
+        final AutoTrajectory scoreCoralSideThreeFromFeederStation = routine.trajectory("ScoreCoralSideThreeFromFeederStationRight");
+        final AutoTrajectory goToFeederStationFromSideThree = routine.trajectory("GetToFeederStationFromSideThreeRight");
+
+        routine.active().onTrue(
+            scoreCoralClose.resetOdometry()
+                .andThen(scoreCoralClose.cmd())
+                    .andThen(new WaitCommand(0.5))
+                        .andThen(new EjectGamePieceVertical(m_intake))
+                            .andThen(new WaitCommand(0.2))
+                                .andThen(goToFeederStationFromSideTwo.cmd())
+                                    .andThen(new WaitCommand(0.5))
+                                        .andThen(new IntakeGamePiece(m_intake))
+                                            .andThen(new WaitCommand(0.2))
+                                                .andThen(scoreCoralSideThreeFromFeederStation.cmd())
+                                                    .andThen(new WaitCommand(0.5))
+                                                        .andThen(new EjectGamePieceVertical(m_intake))
+                                                            .andThen(new WaitCommand(0.2))
+                                                                .andThen(goToFeederStationFromSideThree.cmd())
+                                                                    .andThen(new WaitCommand(0.5))
+                                                                        .andThen(new IntakeGamePiece(m_intake))
+                                                                            .andThen(new WaitCommand(0.2))
+                                                                                .andThen(scoreCoralSideThreeFromFeederStation.cmd())
+                                                                                    .andThen(new WaitCommand(0.5))
+                                                                                        .andThen(new EjectGamePieceVertical(m_intake))
+        );
+        return routine;
+    }
+
+    public AutoRoutine scoreAndPushCloseAuto() {
+        final AutoRoutine routine = m_factory.newRoutine("ScoreAndPushClose Auto");
+        final AutoTrajectory scoreCoralClose = routine.trajectory("ScoreCoralClosePush");
+        final AutoTrajectory returnToPush = routine.trajectory("ReturnToPush");
+        final AutoTrajectory leaveFromPush = routine.trajectory("ScoreCoralClose");
+
+        routine.active().onTrue(
+            scoreCoralClose.resetOdometry()
+                .andThen(scoreCoralClose.cmd())
+                    .andThen(new WaitCommand(0.5))
+                        .andThen(new EjectGamePieceVertical(m_intake))
+                            .andThen(new WaitCommand(0.2))
+                                .andThen(returnToPush.cmd())
+                                    .andThen(new WaitCommand(0.5))
+                                        .andThen(leaveFromPush.cmd())
+        );
+        return routine;
+    }
+
+    public AutoRoutine scoreAndPushCloseRightAuto() {
+        final AutoRoutine routine = m_factory.newRoutine("ScoreAndPushCloseRight Auto");
+        final AutoTrajectory scoreCoralClose = routine.trajectory("ScoreCoralCloseRightPush");
+        final AutoTrajectory returnToPush = routine.trajectory("ReturnToPushRight");
+        final AutoTrajectory leaveFromPush = routine.trajectory("ScoreCoralCloseRight");
+
+        routine.active().onTrue(
+            scoreCoralClose.resetOdometry()
+                .andThen(scoreCoralClose.cmd())
+                    .andThen(new WaitCommand(0.5))
+                        .andThen(new EjectGamePieceVertical(m_intake))
+                            .andThen(new WaitCommand(0.2))
+                                .andThen(returnToPush.cmd())
+                                    .andThen(new WaitCommand(0.5))
+                                        .andThen(leaveFromPush.cmd())
+        );
+        return routine;
+    }
 }

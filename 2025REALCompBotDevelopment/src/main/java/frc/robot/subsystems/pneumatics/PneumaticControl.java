@@ -73,6 +73,7 @@ public class PneumaticControl extends SubsystemBase {
     tab.addNumber("Current", this::getCurrent);
     tab.addBoolean("CompressorEnabled", this::getCompressorEnabled);
     tab.addBoolean("PressureSwitchValue", this::getPressureSwitchValue);
+    tab.addNumber("Pressure(PSI)", this::getPressure);
     tab.addBoolean("ArticulationFORWARD", this::getArticulationForward);
     tab.addBoolean("ArticulationREVERSE", this::getArticulationReverse);
     tab.addBoolean("ArticulationOFF", this::getArticulationOff);
@@ -90,6 +91,11 @@ public class PneumaticControl extends SubsystemBase {
 
   private boolean getPressureSwitchValue() {
     return !compressor.getPressureSwitchValue();
+  }
+
+  private double getPressure() {
+    //return compressor.getPressure();
+    return pneumaticHub.getPressure(0);
   }
 
   public void articulationForward() {

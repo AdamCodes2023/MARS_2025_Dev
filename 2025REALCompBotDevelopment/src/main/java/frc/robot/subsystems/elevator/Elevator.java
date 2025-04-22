@@ -172,21 +172,21 @@ public class Elevator extends SubsystemBase {
   }
 
   public void goToScoreLevelOne() {
-    elevatorMotor.setControl(mmReq.withPosition(1.5).withSlot(0));
+    elevatorMotor.setControl(mmReq.withPosition(1.31).withSlot(0));
   }
 
   public boolean atScoreLevelOne() {
     double currentPos = getElevatorPosition();
-    return currentPos > 1.48 && currentPos < 1.52;
+    return currentPos > 1.29 && currentPos < 1.33;
   }
 
   public void goToScoreLevelTwo() {
-    elevatorMotor.setControl(mmReq.withPosition(4.4).withSlot(0));
+    elevatorMotor.setControl(mmReq.withPosition(4.12).withSlot(0));
   }
 
   public boolean atScoreLevelTwo() {
     double currentPos = getElevatorPosition();
-    return currentPos > 4.38 && currentPos < 4.42;
+    return currentPos > 4.10 && currentPos < 4.14;
   }
 
   public void goToFeederStation() {

@@ -47,7 +47,7 @@ public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
-    private double turboDriveMultiplier = 1.0;
+    private double turboDriveMultiplier = 1.5;
     private double regularDriveMultiplier = 0.5;
     private double slowDriveMultiplier = 0.25;
 
@@ -77,21 +77,42 @@ public class RobotContainer {
     private final AutoChooser autoChooser = new AutoChooser();
 
     public RobotContainer() {
+        //INITIALIZE PATH FOLLOWING
         autoFactory = drivetrain.createAutoFactory();
         autoRoutines = new AutoRoutines(autoFactory, climber, elevator, intake, pneumaticControl);
 
+        //TEST AUTOS
         autoChooser.addRoutine("SimplePath", autoRoutines::simplePathAuto);
         autoChooser.addRoutine("SimpleMultiPath", autoRoutines::simpleMultiPathAuto);
+
+        //LEFT SIDE AUTOS
         autoChooser.addRoutine("ScoreCoralFar", autoRoutines::scoreCoralFarAuto);
         autoChooser.addRoutine("ScoreCoralMiddle", autoRoutines::scoreCoralMiddleAuto);
         autoChooser.addRoutine("ScoreCoralClose", autoRoutines::scoreCoralCloseAuto);
+        //CENTER AUTO
         autoChooser.addRoutine("ScoreCoralSideOneClose", autoRoutines::scoreCoralSideOneCloseAuto);
+        //CENTER AUTO
         autoChooser.addRoutine("ScoreTwoCoralFar", autoRoutines::scoreTwoCoralFarAuto);
         autoChooser.addRoutine("ScoreTwoCoralMiddle", autoRoutines::scoreTwoCoralMiddleAuto);
         autoChooser.addRoutine("ScoreTwoCoralClose", autoRoutines::scoreTwoCoralCloseAuto);
         autoChooser.addRoutine("ScoreThreeCoralFar", autoRoutines::scoreThreeCoralFarAuto);
         autoChooser.addRoutine("ScoreThreeCoralMiddle", autoRoutines::scoreThreeCoralMiddleAuto);
         autoChooser.addRoutine("ScoreThreeCoralClose", autoRoutines::scoreThreeCoralCloseAuto);
+        autoChooser.addRoutine("ScoreAndPushClose", autoRoutines::scoreAndPushCloseAuto);
+
+        //RIGHT SIDE AUTOS
+        autoChooser.addRoutine("ScoreCoralFarRight", autoRoutines::scoreCoralFarRightAuto);
+        autoChooser.addRoutine("ScoreCoralMiddleRight", autoRoutines::scoreCoralMiddleRightAuto);
+        autoChooser.addRoutine("ScoreCoralCloseRight", autoRoutines::scoreCoralCloseRightAuto);
+        autoChooser.addRoutine("ScoreTwoCoralFarRight", autoRoutines::scoreTwoCoralFarRightAuto);
+        autoChooser.addRoutine("ScoreTwoCoralMiddleRight", autoRoutines::scoreTwoCoralMiddleRightAuto);
+        autoChooser.addRoutine("ScoreTwoCoralCloseRight", autoRoutines::scoreTwoCoralCloseRightAuto);
+        autoChooser.addRoutine("ScoreThreeCoralFarRight", autoRoutines::scoreThreeCoralFarRightAuto);
+        autoChooser.addRoutine("ScoreThreeCoralMiddleRight", autoRoutines::scoreThreeCoralMiddleRightAuto);
+        autoChooser.addRoutine("ScoreThreeCoralCloseRight", autoRoutines::scoreThreeCoralCloseRightAuto);
+        autoChooser.addRoutine("ScoreAndPushCloseRight", autoRoutines::scoreAndPushCloseRightAuto);
+
+        //AUTO CHOSER
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
         driveJoystick = new CommandJoystick(0);
@@ -164,7 +185,7 @@ public class RobotContainer {
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-driveJoystick.getY() * MaxSpeed * regularDriveMultiplier) // Drive forward with negative Y (forward)
                     .withVelocityY(-driveJoystick.getX() * MaxSpeed * regularDriveMultiplier) // Drive left with negative X (left)
-                    .withRotationalRate(-rotateJoystick.getX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                    .withRotationalRate(-rotateJoystick.getX() * MaxAngularRate ) // Drive counterclockwise with negative X (left)
             )
         );
 
